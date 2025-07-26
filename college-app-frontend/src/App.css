@@ -1,45 +1,66 @@
-/* Definição das variáveis CSS */
+/* App.css */
+
+/* --- RESET BÁSICO PARA BOX-SIZING (ADICIONAR NO TOPO) --- */
+html {
+  box-sizing: border-box;
+}
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+/* --- FIM DO RESET --- */
+
+/* Sua importação @import url(...) da fonte Roboto deve estar aqui no topo */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+/* Definição das variáveis CSS (Paleta de Cores e Medidas Atualizadas) */
 :root {
-  /* Cores */
-  --primary-color: #007bff; /* Azul para ações primárias/edição */
-  --primary-color-hover: #0056b3; /* Azul mais escuro para hover */
-  --secondary-color: #6c757d; /* Cinza para detalhes/informação */
-  --secondary-color-hover: #5a6268; /* Cinza mais escuro para hover */
-  --success-color: #28a745; /* Verde para sucesso/criação */
-  --success-color-hover: #218838; /* Verde mais escuro para hover */
-  --danger-color: #dc3545; /* Vermelho para perigo/exclusão */
-  --danger-color-hover: #c82333; /* Vermelho mais escuro para hover */
-  --warning-color: #ffc107; /* Amarelo/Laranja para cancelamento */
-  --warning-color-hover: #e0a800; /* Amarelo mais escuro para hover */
-  --info-color: #17a2b8; /* Cor para botões de informação/filtro */
-  --info-color-hover: #138496; /* Hover para info color */
-  --text-color-dark: #333; /* Texto escuro geral */
-  --text-color-medium: #555; /* Texto médio */
-  --text-color-light: #f9f9f9; /* Fundo claro */
-  --text-color-white: #fff; /* Texto branco */
-  --header-color: #2c3e50; /* Cor dos títulos */
-  --border-color: #ccc; /* Cor da borda padrão */
-  --list-border-color: #ddd; /* Cor da borda da lista */
-  --shadow-color: rgba(0, 0, 0, 0.1); /* Sombra padrão */
-  --shadow-color-light: rgba(0, 0, 0, 0.05); /* Sombra mais leve */
-  --focus-shadow-color: rgba(0, 123, 255, 0.25); /* Sombra ao focar input */
+  /* NOVAS CORES baseadas na imagem */
+  --bg-primary: #f8f9fa; /* Fundo principal claro */
+  --bg-secondary: #e9ecef; /* Fundo de elementos secundários (ex: li de matérias atribuídas) */
+  --text-dark: #343a40; /* Texto principal escuro */
+  --text-light: #f8f9fa; /* Texto para fundos escuros */
+  --text-placeholder: #6c757d; /* Cor do placeholder */
+  
+  --input-bg-default: #fff; /* Fundo do input normal */
+  --input-border-default: #ced4da; /* Borda do input normal */
+  --input-bg-filled: #495057; /* Fundo do input preenchido (como na imagem) */
+  --input-text-filled: #ffffff; /* Texto do input preenchido */
+
+  --button-primary: #17a2b8; /* Azul vibrante (INFO) para botões principais/aplicar filtro */
+  --button-primary-hover: #138496; /* Azul mais escuro no hover */
+  --button-success: #28a745; /* Verde para sucesso (Criar Aluno) */
+  --button-success-hover: #218838;
+  --button-danger: #dc3545; /* Vermelho para exclusão */
+  --button-danger-hover: #c82333;
+  --button-warning: #ffc107; /* Amarelo/Laranja para cancelar */
+  --button-warning-hover: #e0a800;
+  --button-neutral: #6c757d; /* Novo: cinza para navegação/botões secundários não-primários */
+  --button-neutral-hover: #5a6268;
+  
+  --header-color: #343a40; /* Títulos (quase preto) */
+  --border-color-light: #dee2e6; /* Bordas mais claras */
+  --list-border-color: #f8f9fa; /* Borda do item da lista pode ser mais sutil */
+
+  --shadow-subtle: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075); /* Sombra mais sutil */
+  --shadow-focus: 0 0 0 0.2rem rgba(23, 162, 184, 0.25); /* Sombra ao focar input */
+
 
   /* Medidas/Espaçamentos (agora em REM, base 16px) */
-  --root-font-size: 16px; /* Base para 1rem, pode ser alterado se quiser uma escala base diferente */
+  --root-font-size: 16px; 
 
-  --spacing-xxs: 0.1875rem; /* 3px / 16 = 0.1875rem */
-  --spacing-xs: 0.3125rem;  /* 5px / 16 = 0.3125rem */
-  --spacing-sm: 0.5rem;     /* 8px / 16 = 0.5rem */
-  --spacing-md: 0.625rem;   /* 10px / 16 = 0.625rem */
-  --spacing-lg: 0.9375rem;  /* 15px / 16 = 0.9375rem */
-  --spacing-xl: 1.25rem;    /* 20px / 16 = 1.25rem */
-  --spacing-xxl: 1.875rem;  /* 30px / 16 = 1.875rem */
-  --spacing-xxxl: 2.5rem;   /* 40px / 16 = 2.5rem */
+  --spacing-xxs: 0.1875rem; /* 3px */
+  --spacing-xs: 0.3125rem;  /* 5px */
+  --spacing-sm: 0.5rem;     /* 8px */
+  --spacing-md: 0.625rem;   /* 10px */
+  --spacing-lg: 0.9375rem;  /* 15px */
+  --spacing-xl: 1.25rem;    /* 20px */
+  --spacing-xxl: 1.25rem;  /* REDUZIDO de 1.875rem (30px) para 1.25rem (20px) */
+  --spacing-xxxl: 2.5rem;   /* 40px */
 
-  --border-width: 1px; /* Bordas geralmente mantêm PX */
-  --border-radius-sm: 0.25rem; /* 4px / 16 = 0.25rem */
-  --border-radius-md: 0.3125rem; /* 5px / 16 = 0.3125rem */
-  --border-radius-lg: 0.5rem; /* 8px / 16 = 0.5rem */
+  --border-width: 1px;
+  --border-radius-sm: 0.25rem;
+  --border-radius-md: 0.3125rem;
+  --border-radius-lg: 0.5rem; /* 8px */
 
   --input-padding: 0.625rem; /* 10px */
   --input-padding-mobile: 0.5rem; /* 8px */
@@ -51,38 +72,37 @@
   --button-padding-y-mobile-xs: 0.375rem; /* 6px */
   --button-padding-x-mobile-xs: 0.625rem; /* 10px */
 
-  --button-margin: var(--spacing-xs); /* 5px */
-  --button-font-size: 0.95em; /* 'em' é bom para fontes relacionadas ao pai */
-
-  /* Larguras específicas para botões de ação na lista */
-  --list-button-width: 4.5rem; /* 72px */
-  --list-button-padding-x: 0.625rem; /* 10px */
-  --list-button-gap: var(--spacing-xxs); /* Reduzido de spacing-xs para spacing-xxs (3px) */
-
-  --list-item-padding: 0.9375rem; /* 15px */
-  --list-item-margin-bottom: 0.625rem; /* 10px */
-  --list-item-content-gap: var(--spacing-md); /* Novo gap para separar nome do container de botões */
-
-  --form-field-margin-bottom: 0.9375rem; /* 15px */
-  --form-label-margin-bottom: var(--spacing-xs); /* 5px */
-  /* --form-element-align-offset: 0.0625rem; REMOVIDO: será ajustado de outra forma */
+  --button-margin: var(--spacing-xs);
+  --button-font-size: 0.95em;
+  --input-height: calc(var(--button-padding-y) * 2 + var(--button-font-size) * 1.2 + var(--border-width) * 2); 
 
 
-  --header-margin-bottom: 1.25rem; /* 20px */
-  --hr-height: 1px; /* Mantém em PX */
+  --list-button-width: 4.5rem;
+  --list-button-padding-x: 0.625rem;
+  --list-button-gap: var(--spacing-xxs);
+  --icon-text-spacing: 0.3125rem;
 
-  /* Larguras específicas para campos concisos */
-  --concise-year-width: 6.25rem; /* 100px */
-  --concise-shift-width: 5rem; /* 80px */
-  --concise-enrollment-min-width: 9.375rem; /* 150px */
-  --filter-year-width: 6.25rem; /* Largura para campo de ano no filtro */
-  --filter-shift-width: 5rem; /* Largura para campo de turno no filtro */
+  --list-item-padding: 0.9375rem;
+  --list-item-margin-bottom: 0.625rem;
+  --list-item-content-gap: var(--spacing-md);
+
+  --form-field-margin-bottom: 0.9375rem;
+  --form-label-margin-bottom: var(--spacing-xs);
+
+  --header-margin-bottom: 1.25rem;
+  --hr-height: 1px;
+
+  --concise-year-width: 6.25rem;
+  --concise-shift-width: 5rem;
+  --concise-enrollment-min-width: 9.375rem;
+  --filter-year-width: 6.25rem;
+  --filter-shift-width: 5rem;
 }
 
 
 /* Estilos gerais para a aplicação */
 #root {
-  max-width: 80rem; /* 1280px / 16 = 80rem */
+  max-width: 80rem;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
@@ -90,15 +110,15 @@
 
 .App {
   font-family: 'Roboto', sans-serif;
-  color: var(--text-color-dark);
-  background-color: var(--text-color-light);
+  color: var(--text-dark);
+  background-color: var(--bg-primary);
   border-radius: var(--border-radius-lg);
-  box-shadow: 0 4px 8px var(--shadow-color);
+  box-shadow: var(--shadow-subtle);
   padding: var(--spacing-xl);
   margin-bottom: var(--spacing-xxl);
 }
 
-h1, h2 {
+h1, h2, h3, h4, h5 {
   color: var(--header-color);
   margin-bottom: var(--header-margin-bottom);
 }
@@ -106,13 +126,55 @@ h1, h2 {
 hr {
   border: 0;
   height: var(--hr-height);
-  background-color: var(--border-color);
+  background-color: var(--border-color-light);
   margin: var(--spacing-xxxl) 0;
 }
 
+/* --- ESTILOS DE NAVEGAÇÃO PRINCIPAL --- */
+.main-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: var(--spacing-xxl);
+}
+.main-header h1 {
+  margin-bottom: var(--spacing-lg);
+  font-size: 2.5em;
+  color: var(--header-color);
+}
+.navigation-buttons {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+}
+.nav-button {
+  background-color: var(--button-neutral);
+  color: var(--text-light);
+  padding: var(--button-padding-y) var(--button-padding-x);
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+.nav-button:hover {
+  background-color: var(--button-neutral-hover);
+}
+.nav-button.active {
+  background-color: var(--button-primary);
+  box-shadow: var(--shadow-subtle);
+}
+.nav-button.active:hover {
+  background-color: var(--button-primary-hover);
+}
+.students-section, .teachers-section {
+  width: 100%;
+  padding-top: var(--spacing-lg);
+  overflow-x: hidden; 
+}
+
+
 /* Estilos para Formulários */
 form div {
-  margin-bottom: var(--form-field-margin-bottom); /* Mantém essa margem entre divs */
+  margin-bottom: var(--form-field-margin-bottom);
   text-align: left;
 }
 
@@ -120,24 +182,51 @@ label {
   display: block;
   margin-bottom: var(--form-label-margin-bottom);
   font-weight: bold;
-  color: var(--text-color-medium);
+  color: var(--text-dark);
 }
 
 input[type="text"],
-input[type="number"] {
-  width: calc(100% - (var(--input-padding) * 2) - (var(--border-width) * 2));
+input[type="number"],
+input[type="email"], /* Adicionado type="email" */
+.subject-select,
+.select-student-assignment,
+.subject-select-assignment {
+  width: 100%; /* Agora 100% direto, box-sizing cuidará do padding/border */
   padding: var(--input-padding);
-  border: var(--border-width) solid var(--border-color);
+  border: var(--border-width) solid var(--input-border-default);
   border-radius: var(--border-radius-sm);
   font-size: 1em;
-  /* IMPORTANTE: Remover margin-bottom dos inputs diretamente para evitar desalinhamento */
-  margin-bottom: 0; /* Assegura que o input não tenha margem inferior */
+  margin-bottom: 0;
+  height: var(--input-height);
+  /* box-sizing: border-box; -> Herdado do reset global */
+  background-color: var(--input-bg-default);
+  color: var(--text-dark);
 }
 
-input:focus {
-  border-color: var(--primary-color);
+/* Placeholder Styling */
+input::placeholder {
+  color: var(--text-placeholder);
+  opacity: 1;
+}
+input:focus::placeholder {
+  color: transparent;
+}
+/* Estilo para inputs quando têm valor (como na imagem) */
+input[type="text"]:not(:placeholder-shown),
+input[type="number"]:not(:placeholder-shown),
+input[type="email"]:not(:placeholder-shown) { /* Adicionado type="email" */
+    background-color: var(--input-bg-filled);
+    color: var(--input-text-filled);
+}
+
+
+input:focus,
+.subject-select:focus,
+.select-student-assignment:focus,
+.subject-select-assignment:focus {
+  border-color: var(--button-primary);
   outline: none;
-  box-shadow: 0 0 0 2px var(--focus-shadow-color);
+  box-shadow: var(--shadow-focus);
 }
 
 /* Estilos para Botões */
@@ -153,8 +242,9 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* IMPORTANTE: Remover margin-bottom dos botões diretamente */
-  margin-bottom: 0; /* Assegura que o botão não tenha margem inferior */
+  margin-bottom: 0;
+  /* box-sizing: border-box; -> Herdado do reset global */
+  height: var(--input-height);
 }
 
 /* Estilo para ícones dentro de botões (para espaçamento) */
@@ -162,9 +252,12 @@ button .svg-inline--fa {
     margin-right: var(--icon-text-spacing);
 }
 
-/* Se um botão tem APENAS um ícone, remove a margem (para botões de lista e agora Salvar/Cancelar edição) */
+/* Se um botão tem APENAS um ícone, remove a margem */
 .list-buttons-container button .svg-inline--fa,
-.form-button-container button .svg-inline--fa {
+.form-button-container button .svg-inline--fa,
+.subject-add-form .add-subject-button .svg-inline--fa,
+.assigned-subjects-list .remove-subject-button .svg-inline--fa,
+button.add-subject-to-student-button .svg-inline--fa {
     margin-right: 0;
 }
 
@@ -172,79 +265,99 @@ button .svg-inline--fa {
 /* Botões Padrão/Criar */
 button[type="submit"],
 button.create-button {
-  background-color: var(--success-color);
-  color: var(--text-color-white);
+  background-color: var(--button-success);
+  color: var(--text-light);
 }
 
 button[type="submit"]:hover,
 button.create-button:hover {
-  background-color: var(--success-color-hover);
+  background-color: var(--button-success-hover);
   transform: translateY(-var(--border-width));
 }
 
 /* Botão Editar */
 button.edit-button {
-  background-color: var(--primary-color);
-  color: var(--text-color-white);
+  background-color: var(--button-primary);
+  color: var(--text-light);
 }
 
 button.edit-button:hover {
-  background-color: var(--primary-color-hover);
+  background-color: var(--button-primary-hover);
   transform: translateY(-var(--border-width));
 }
 
 /* Botão Detalhes */
 button.details-button {
-  background-color: var(--secondary-color);
-  color: var(--text-color-white);
+  background-color: var(--button-neutral);
+  color: var(--text-light);
 }
 
 button.details-button:hover {
-  background-color: var(--secondary-color-hover);
+  background-color: var(--button-neutral-hover);
   transform: translateY(-var(--border-width));
 }
 
 /* Botão Excluir */
 button.delete-button {
-  background-color: var(--danger-color);
-  color: var(--text-color-white);
+  background-color: var(--button-danger);
+  color: var(--text-light);
 }
 
 button.delete-button:hover {
-  background-color: var(--danger-color-hover);
+  background-color: var(--button-danger-hover);
   transform: translateY(-var(--border-width));
 }
 
 /* Botão Cancelar */
 button.cancel-button {
-  background-color: var(--warning-color);
-  color: var(--text-color-dark);
+  background-color: var(--button-warning);
+  color: var(--text-dark);
 }
 button.cancel-button:hover {
-  background-color: var(--warning-color-hover);
+  background-color: var(--button-warning-hover);
   transform: translateY(-var(--border-width));
 }
 
-/* --- Novo estilo para o botão de filtro --- */
-button.filter-button {
-  background-color: var(--info-color);
-  color: var(--text-color-white);
+/* --- Estilo para botões de filtro e atribuição principal --- */
+button.filter-button,
+button.add-subject-to-student-button {
+  background-color: var(--button-primary);
+  color: var(--text-light);
+  padding: var(--button-padding-y) var(--button-padding-x);
 }
-button.filter-button:hover {
-  background-color: var(--info-color-hover);
+button.filter-button:hover,
+button.add-subject-to-student-button:hover {
+  background-color: var(--button-primary-hover);
   transform: translateY(-var(--border-width));
 }
 
+/* --- Botão Remover (Matéria de Aluno/Professor) --- */
+button.remove-subject-button {
+  background-color: var(--button-danger);
+  color: var(--text-light);
+  padding: var(--spacing-xxs) var(--spacing-sm);
+  font-size: 0.8em;
+  width: auto;
+  min-width: unset;
+  margin-left: auto;
+  flex-shrink: 0;
+  height: auto;
+}
+button.remove-subject-button:hover {
+  background-color: var(--button-danger-hover);
+  transform: translateY(-1px);
+}
 
-/* Lista de Alunos */
+
+/* Lista de Alunos/Professores */
 ul {
   list-style: none;
   padding: 0;
 }
 
 li {
-  background-color: var(--text-color-white);
-  border: var(--border-width) solid var(--list-border-color);
+  background-color: var(--bg-primary);
+  border: var(--border-width) solid var(--border-color-light);
   border-radius: var(--border-radius-sm);
   margin-bottom: var(--list-item-margin-bottom);
   padding: var(--list-item-padding);
@@ -252,7 +365,7 @@ li {
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0 2px 4px var(--shadow-color-light);
+  box-shadow: var(--shadow-subtle);
   gap: var(--list-item-content-gap);
 }
 
@@ -271,7 +384,7 @@ li strong {
 /* Ajuste para botões de ação DENTRO do list-buttons-container (apenas ícone) */
 .list-buttons-container button {
   padding: var(--button-padding-y) var(--list-button-padding-x);
-  margin: 0; /* Garante que margem interna seja 0 */
+  margin: 0;
   flex: 0 0 auto;
   width: var(--list-button-width);
 }
@@ -280,17 +393,17 @@ li strong {
 p {
   margin-top: var(--spacing-md);
   font-style: italic;
-  color: var(--secondary-color);
+  color: var(--text-placeholder);
 }
 
 /* Mensagens de Formulário */
 p.success-message {
-  color: var(--success-color);
+  color: var(--button-success);
   font-weight: bold;
 }
 
 p.error-message {
-  color: var(--danger-color);
+  color: var(--button-danger);
   font-weight: bold;
 }
 
@@ -298,33 +411,30 @@ p.error-message {
 .form-group-inline {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-xxl); /* Gap entre os inputs do formulário */
+  gap: var(--spacing-xxl);
   margin-bottom: var(--form-field-margin-bottom);
-  align-items: center; /* MUDANÇA CRÍTICA AQUI: Centraliza verticalmente todos os itens */
+  align-items: center;
 }
 
 /* Estilo para campos de filtro e edição/criação, assegurando flex:1 e min-width */
 .form-group-inline > div {
   flex: 1;
-  min-width: 7.5rem; /* 120px */
-  /* IMPORTANTE: Remover margin-bottom dos divs internos que contêm inputs/labels */
-  margin-bottom: 0; /* Assegura que o div não tenha margem inferior */
+  min-width: 7.5rem;
+  margin-bottom: 0;
 }
 
 /* Estilo para o container de botões DENTRO do form-group-inline */
 .form-button-container {
   display: flex;
-  gap: var(--list-button-gap); /* Gap entre Salvar e Cancelar */
+  gap: var(--list-button-gap);
   flex-wrap: wrap;
   margin-left: auto;
-  /* align-self: flex-end; REMOVIDO: align-items: center do pai já cuida */
-  /* margin-bottom: var(--form-element-align-offset); REMOVIDO: será 0 */
-  margin-bottom: 0; /* Garante que não há offset vertical */
+  margin-bottom: 0;
 }
 
 /* Redefine margem dos botões dentro do form-button-container */
 .form-button-container button {
-    margin: 0; /* Remove margem padrão, o gap agora controla */
+    margin: 0;
     flex: 0 0 auto;
     width: auto;
     min-width: 3.5rem;
@@ -363,6 +473,85 @@ p.error-message {
   width: 100%;
 }
 
+/* --- ESTILOS DAS SEÇÕES: Gerenciamento de Matérias e Professores --- */
+.subject-assignment-section,
+.teachers-section {
+  background-color: var(--bg-primary);
+  border: var(--border-width) solid var(--border-color-light);
+  border-radius: var(--border-radius-sm);
+  padding: var(--spacing-lg);
+  margin-top: var(--spacing-xl);
+  text-align: left;
+  overflow-x: hidden; 
+}
+
+.subject-assignment-section h4,
+.teachers-section h2,
+.teachers-section h3,
+.teachers-section h4 {
+  color: var(--header-color);
+  margin-top: var(--spacing-xl);
+  margin-bottom: var(--spacing-lg);
+}
+.teachers-section h2 {
+    margin-top: 0;
+}
+.subject-assignment-section p,
+.teachers-section p {
+  font-style: normal;
+  margin-top: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.select-container {
+    flex: 1;
+    min-width: 10rem;
+    margin-bottom: 0;
+}
+
+/* Classes específicas para os dropdowns de aluno e matéria */
+.select-student-assignment,
+.subject-select-assignment,
+.subject-select {
+    background-color: var(--input-bg-default);
+    color: var(--text-dark);
+    border: var(--border-width) solid var(--input-border-default);
+}
+
+
+.subject-add-form {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: center;
+  margin-bottom: var(--spacing-xl);
+  flex-wrap: wrap;
+}
+
+.add-subject-button {
+  flex: 0 0 auto;
+  width: auto;
+  padding: var(--button-padding-y) var(--list-button-padding-x);
+}
+
+.assigned-subjects-list {
+  list-style: none;
+  padding: 0;
+}
+
+.assigned-subjects-list li {
+  background-color: var(--bg-secondary);
+  border: var(--border-width) solid var(--border-color-light);
+  border-radius: var(--border-radius-sm);
+  margin-bottom: var(--spacing-xs);
+  padding: var(--spacing-sm);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9em;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+}
+
 
 /* --- Media Queries para Responsividade --- */
 
@@ -372,22 +561,28 @@ p.error-message {
     padding: var(--spacing-lg);
   }
 
-  h1, h2 {
-    font-size: 1.8em;
-    margin-bottom: var(--spacing-lg);
+  h1 {
+    font-size: 2em;
+  }
+  h2, h3, h4, h5 {
+    font-size: 1.5em;
+    margin-bottom: var(--spacing-md);
+  }
+  
+  hr {
+    margin: var(--spacing-xxl) 0;
   }
 
   /* Ajustes para formulário in-line em telas menores */
   .form-group-inline {
     flex-direction: column;
     gap: 0;
-    align-items: stretch; /* Estica para preencher a largura */
+    align-items: stretch;
   }
 
   .form-group-inline > div {
     flex: unset;
     min-width: unset;
-    /* Restaura a margem inferior para espaçamento vertical em colunas */
     margin-bottom: var(--form-field-margin-bottom);
   }
 
@@ -400,18 +595,25 @@ p.error-message {
   .form-group-inline [id^="edit-enrollment-"],
   .filter-form #filter-year-group,
   .filter-form #filter-shift-group,
-  .form-button-container {
+  .form-button-container,
+  .select-container {
     width: 100%;
     flex: unset;
     margin-left: 0;
+    margin-top: var(--spacing-lg);
     text-align: center;
   }
+  .select-container select {
+      margin-top: 0;
+      margin-bottom: 0;
+  }
+
 
   /* Redefine a margem para espaçamento em mobile */
   .form-button-container {
       margin-top: var(--spacing-lg);
       margin-bottom: var(--spacing-md);
-      justify-content: stretch; /* Estica os botões se eles ocuparem 100% */
+      justify-content: stretch;
   }
 
   .form-button-container button {
@@ -422,11 +624,15 @@ p.error-message {
 
 
   input[type="text"],
-  input[type="number"] {
+  input[type="number"],
+  input[type="email"], /* Adicionado type="email" */
+  .subject-select,
+  .select-student-assignment,
+  .subject-select-assignment {
     width: calc(100% - (var(--input-padding-mobile) * 2) - (var(--border-width) * 2));
     padding: var(--input-padding-mobile);
-    /* Remove margin-bottom aqui também, pois o div pai já terá a margem */
     margin-bottom: 0;
+    height: auto;
   }
 
   button {
@@ -434,7 +640,6 @@ p.error-message {
     font-size: 0.9em;
     margin: var(--spacing-xxs);
     flex-grow: 1;
-    /* Remove margin-bottom aqui também */
     margin-bottom: 0;
   }
 
@@ -472,6 +677,34 @@ p.error-message {
 
   li form div {
     width: 100%;
+  }
+
+  /* Mobile: Gerenciamento de matérias (seções específicas) */
+  .subject-assignment-section {
+      padding: var(--spacing-md);
+  }
+  .subject-assignment-section h4 {
+      font-size: 1.2em;
+  }
+
+  .subject-add-form {
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+  .subject-add-form .select-container,
+  .subject-add-form .add-subject-button {
+    width: 100%;
+    margin: 0;
+  }
+  .assigned-subjects-list li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-xxs);
+  }
+  .assigned-subjects-list li button.remove-subject-button {
+    width: 100%;
+    margin-top: var(--spacing-xs);
+    margin-left: 0;
   }
 }
 
