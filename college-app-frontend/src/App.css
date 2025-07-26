@@ -1,0 +1,340 @@
+/* Estilos gerais para a aplicação */
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.App {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+h1, h2 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background-color: #ccc;
+  margin: 40px 0;
+}
+
+/* Estilos para Formulários */
+form div {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #555;
+}
+
+input[type="text"],
+input[type="number"] {
+  width: calc(100% - 22px); /* Considerando padding e border */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1em;
+}
+
+input:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+/* Estilos para Botões */
+button {
+  padding: 10px 20px;
+  margin: 5px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+  font-size: 0.95em;
+}
+
+/* Botões Padrão/Criar */
+button[type="submit"],
+button.create-button {
+  background-color: #28a745;
+  color: white;
+}
+
+button[type="submit"]:hover,
+button.create-button:hover {
+  background-color: #218838;
+  transform: translateY(-1px);
+}
+
+/* Botão Editar */
+button.edit-button {
+  background-color: #007bff;
+  color: white;
+}
+
+button.edit-button:hover {
+  background-color: #0056b3;
+  transform: translateY(-1px);
+}
+
+/* Botão Detalhes */
+button.details-button {
+  background-color: #6c757d;
+  color: white;
+}
+
+button.details-button:hover {
+  background-color: #5a6268;
+  transform: translateY(-1px);
+}
+
+/* Botão Excluir */
+button.delete-button {
+  background-color: #dc3545;
+  color: white;
+}
+
+button.delete-button:hover {
+  background-color: #c82333;
+  transform: translateY(-1px);
+}
+
+/* Botão Cancelar */
+button.cancel-button {
+  background-color: #ffc107;
+  color: #333;
+}
+button.cancel-button:hover {
+  background-color: #e0a800;
+  transform: translateY(-1px);
+}
+
+/* Lista de Alunos */
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  padding: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+li strong {
+  margin-right: 10px;
+  color: #34495e;
+}
+
+li button {
+  margin-left: 10px;
+}
+
+p {
+  margin-top: 10px;
+  font-style: italic;
+  color: #666;
+}
+
+/* Mensagens de Formulário */
+p.success-message {
+  color: #28a745;
+  font-weight: bold;
+}
+
+p.error-message {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+/* --- Estilos para campos em linha --- */
+.form-group-inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-bottom: 15px;
+  align-items: flex-end; /* Alinha os itens pela base */
+}
+
+.form-group-inline > div {
+  flex: 1;
+  min-width: 120px;
+}
+
+/* Estilo específico para o campo de Matrícula (mantém largura flexível) */
+.form-group-inline #enrollment,
+.form-group-inline [id^="edit-enrollment-"] {
+  flex: 1; /* Permite que cresça e ocupe o espaço restante */
+  min-width: 150px; /* Um pouco mais de largura para matrícula */
+}
+
+/* Estilo específico para o campo de Ano Atual */
+.form-group-inline #new-current-year-group,
+.form-group-inline [id^="edit-current-year-group-"] {
+  flex: 0 0 auto; /* Não cresce, não encolhe, largura automática */
+  width: 100px; /* Largura fixa menor para Ano Atual */
+  min-width: unset; /* Remove min-width do pai */
+}
+
+/* Estilo específico para o campo de Turno */
+.form-group-inline #new-shift-group,
+.form-group-inline [id^="edit-shift-group-"] {
+  flex: 0 0 auto; /* Não cresce, não encolhe, largura automática */
+  width: 80px; /* Largura fixa menor para Turno */
+  min-width: unset; /* Remove min-width do pai */
+}
+
+/* Container para o botão "Criar Aluno" */
+.form-button-container {
+  flex: 0 0 auto; /* Não cresce, não encolhe, largura automática */
+  margin-left: auto; /* Empurra o container para a direita */
+  align-self: flex-end; /* Alinha o botão à base dos outros inputs */
+  margin-bottom: 5px; /* Ajuste para alinhar com a base dos inputs */
+}
+
+.form-group-inline input {
+  width: 100%; /* Ocupa 100% do seu flex item pai (div) */
+}
+
+
+/* --- Media Queries para Responsividade --- */
+
+/* Telas menores que 768px (tablets e smartphones) */
+@media (max-width: 768px) {
+  .App {
+    padding: 15px;
+  }
+
+  h1, h2 {
+    font-size: 1.8em;
+    margin-bottom: 15px;
+  }
+
+  /* Ajustes para formulário in-line em telas menores */
+  .form-group-inline {
+    flex-direction: column;
+    gap: 0;
+    align-items: stretch; /* Estica os itens para preencher a largura */
+  }
+
+  .form-group-inline > div {
+    flex: unset;
+    min-width: unset;
+  }
+
+  /* Em telas pequenas, todos os campos voltam a ocupar a largura total */
+  .form-group-inline #new-current-year-group,
+  .form-group-inline [id^="edit-current-year-group-"],
+  .form-group-inline #new-shift-group,
+  .form-group-inline [id^="edit-shift-group-"],
+  .form-group-inline #enrollment,
+  .form-group-inline [id^="edit-enrollment-"] {
+    width: 100%; /* Ajusta a largura do input como os outros */
+    flex: unset;
+  }
+
+  /* Botão em telas pequenas */
+  .form-button-container {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 15px; /* Espaçamento acima do botão */
+    text-align: center; /* Centraliza o botão se ele não ocupar 100% */
+  }
+
+  .form-button-container button {
+      width: 100%; /* Botões ocupam largura total em telas menores */
+      margin-left: 0;
+      margin-right: 0;
+  }
+
+
+  input[type="text"],
+  input[type="number"] {
+    width: calc(100% - 20px);
+    padding: 8px;
+  }
+
+  button {
+    padding: 8px 15px;
+    font-size: 0.9em;
+    margin: 3px;
+    flex-grow: 1;
+  }
+
+  li {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+  }
+
+  li strong {
+    margin-bottom: 5px;
+    margin-right: 0;
+  }
+
+  li > *:not(strong) {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 5px;
+  }
+
+  li form div {
+    width: 100%;
+  }
+
+  li button {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 8px;
+  }
+}
+
+/* Telas muito pequenas (smartphones em modo retrato) */
+@media (max-width: 480px) {
+  #root {
+    padding: 1rem;
+  }
+
+  .App {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 1.5em;
+  }
+
+  h2 {
+    font-size: 1.3em;
+  }
+
+  button {
+    font-size: 0.85em;
+    padding: 6px 10px;
+  }
+
+  li {
+    padding: 8px;
+  }
+}
