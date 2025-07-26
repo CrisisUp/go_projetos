@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-
 /* Definição das variáveis CSS */
 :root {
   /* Cores */
@@ -13,6 +11,8 @@
   --danger-color-hover: #c82333; /* Vermelho mais escuro para hover */
   --warning-color: #ffc107; /* Amarelo/Laranja para cancelamento */
   --warning-color-hover: #e0a800; /* Amarelo mais escuro para hover */
+  --info-color: #17a2b8; /* Cor para botões de informação/filtro */
+  --info-color-hover: #138496; /* Hover para info color */
   --text-color-dark: #333; /* Texto escuro geral */
   --text-color-medium: #555; /* Texto médio */
   --text-color-light: #f9f9f9; /* Fundo claro */
@@ -54,16 +54,19 @@
   --button-margin: var(--spacing-xs); /* 5px */
   --button-font-size: 0.95em; /* 'em' é bom para fontes relacionadas ao pai */
 
-  /* Larguras específicas para botões de ação na lista (novas variáveis) */
-  --list-button-width: 4.5rem; /* Reduzido de 5.5rem (88px) para 4.5rem (72px) */
-  --list-button-padding-x: 0.625rem; /* Novo padding X para botões de lista (10px) */
-  --list-button-margin-left: var(--spacing-xs); /* 5px */
+  /* Larguras específicas para botões de ação na lista */
+  --list-button-width: 4.5rem; /* 72px */
+  --list-button-padding-x: 0.625rem; /* 10px */
+  --list-button-gap: var(--spacing-xxs); /* Reduzido de spacing-xs para spacing-xxs (3px) */
 
   --list-item-padding: 0.9375rem; /* 15px */
   --list-item-margin-bottom: 0.625rem; /* 10px */
+  --list-item-content-gap: var(--spacing-md); /* Novo gap para separar nome do container de botões */
 
   --form-field-margin-bottom: 0.9375rem; /* 15px */
   --form-label-margin-bottom: var(--spacing-xs); /* 5px */
+  /* --form-element-align-offset: 0.0625rem; REMOVIDO: será ajustado de outra forma */
+
 
   --header-margin-bottom: 1.25rem; /* 20px */
   --hr-height: 1px; /* Mantém em PX */
@@ -72,6 +75,8 @@
   --concise-year-width: 6.25rem; /* 100px */
   --concise-shift-width: 5rem; /* 80px */
   --concise-enrollment-min-width: 9.375rem; /* 150px */
+  --filter-year-width: 6.25rem; /* Largura para campo de ano no filtro */
+  --filter-shift-width: 5rem; /* Largura para campo de turno no filtro */
 }
 
 
@@ -79,12 +84,12 @@
 #root {
   max-width: 80rem; /* 1280px / 16 = 80rem */
   margin: 0 auto;
-  padding: 2rem; /* Já estava em rem */
+  padding: 2rem;
   text-align: center;
 }
 
 .App {
-  font-family: 'Roboto','Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Roboto', sans-serif;
   color: var(--text-color-dark);
   background-color: var(--text-color-light);
   border-radius: var(--border-radius-lg);
@@ -107,7 +112,7 @@ hr {
 
 /* Estilos para Formulários */
 form div {
-  margin-bottom: var(--form-field-margin-bottom);
+  margin-bottom: var(--form-field-margin-bottom); /* Mantém essa margem entre divs */
   text-align: left;
 }
 
@@ -120,11 +125,13 @@ label {
 
 input[type="text"],
 input[type="number"] {
-  width: calc(100% - (var(--input-padding) * 2) - (var(--border-width) * 2)); /* Considerando padding e border */
+  width: calc(100% - (var(--input-padding) * 2) - (var(--border-width) * 2));
   padding: var(--input-padding);
   border: var(--border-width) solid var(--border-color);
   border-radius: var(--border-radius-sm);
   font-size: 1em;
+  /* IMPORTANTE: Remover margin-bottom dos inputs diretamente para evitar desalinhamento */
+  margin-bottom: 0; /* Assegura que o input não tenha margem inferior */
 }
 
 input:focus {
@@ -143,7 +150,24 @@ button {
   cursor: pointer;
   transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
   font-size: var(--button-font-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* IMPORTANTE: Remover margin-bottom dos botões diretamente */
+  margin-bottom: 0; /* Assegura que o botão não tenha margem inferior */
 }
+
+/* Estilo para ícones dentro de botões (para espaçamento) */
+button .svg-inline--fa {
+    margin-right: var(--icon-text-spacing);
+}
+
+/* Se um botão tem APENAS um ícone, remove a margem (para botões de lista e agora Salvar/Cancelar edição) */
+.list-buttons-container button .svg-inline--fa,
+.form-button-container button .svg-inline--fa {
+    margin-right: 0;
+}
+
 
 /* Botões Padrão/Criar */
 button[type="submit"],
@@ -201,6 +225,17 @@ button.cancel-button:hover {
   transform: translateY(-var(--border-width));
 }
 
+/* --- Novo estilo para o botão de filtro --- */
+button.filter-button {
+  background-color: var(--info-color);
+  color: var(--text-color-white);
+}
+button.filter-button:hover {
+  background-color: var(--info-color-hover);
+  transform: translateY(-var(--border-width));
+}
+
+
 /* Lista de Alunos */
 ul {
   list-style: none;
@@ -218,20 +253,29 @@ li {
   align-items: center;
   justify-content: space-between;
   box-shadow: 0 2px 4px var(--shadow-color-light);
+  gap: var(--list-item-content-gap);
 }
 
 li strong {
-  margin-right: var(--spacing-md);
   color: var(--header-color);
 }
 
-/* Ajuste para botões de ação na lista (Detalhes, Editar, Excluir) */
-li button {
-  padding: var(--button-padding-y) var(--list-button-padding-x); /* Usando novo padding-x */
-  margin-left: var(--list-button-margin-left);
-  flex: 0 0 auto;
-  width: var(--list-button-width); /* Nova largura mais compacta */
+/* --- Estilo para o container de botões da lista --- */
+.list-buttons-container {
+  display: flex;
+  gap: var(--list-button-gap);
+  flex-wrap: wrap;
+  margin-left: auto;
 }
+
+/* Ajuste para botões de ação DENTRO do list-buttons-container (apenas ícone) */
+.list-buttons-container button {
+  padding: var(--button-padding-y) var(--list-button-padding-x);
+  margin: 0; /* Garante que margem interna seja 0 */
+  flex: 0 0 auto;
+  width: var(--list-button-width);
+}
+
 
 p {
   margin-top: var(--spacing-md);
@@ -250,19 +294,43 @@ p.error-message {
   font-weight: bold;
 }
 
-/* --- Estilos para campos em linha --- */
+/* --- Estilos para campos em linha (formulários de criação/edição/filtro) --- */
 .form-group-inline {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-xxl);
+  gap: var(--spacing-xxl); /* Gap entre os inputs do formulário */
   margin-bottom: var(--form-field-margin-bottom);
-  align-items: flex-end;
+  align-items: center; /* MUDANÇA CRÍTICA AQUI: Centraliza verticalmente todos os itens */
 }
 
+/* Estilo para campos de filtro e edição/criação, assegurando flex:1 e min-width */
 .form-group-inline > div {
   flex: 1;
-  min-width: 7.5rem; /* 120px / 16 = 7.5rem */
+  min-width: 7.5rem; /* 120px */
+  /* IMPORTANTE: Remover margin-bottom dos divs internos que contêm inputs/labels */
+  margin-bottom: 0; /* Assegura que o div não tenha margem inferior */
 }
+
+/* Estilo para o container de botões DENTRO do form-group-inline */
+.form-button-container {
+  display: flex;
+  gap: var(--list-button-gap); /* Gap entre Salvar e Cancelar */
+  flex-wrap: wrap;
+  margin-left: auto;
+  /* align-self: flex-end; REMOVIDO: align-items: center do pai já cuida */
+  /* margin-bottom: var(--form-element-align-offset); REMOVIDO: será 0 */
+  margin-bottom: 0; /* Garante que não há offset vertical */
+}
+
+/* Redefine margem dos botões dentro do form-button-container */
+.form-button-container button {
+    margin: 0; /* Remove margem padrão, o gap agora controla */
+    flex: 0 0 auto;
+    width: auto;
+    min-width: 3.5rem;
+    padding: var(--button-padding-y) var(--list-button-padding-x);
+}
+
 
 /* Estilo específico para o campo de Matrícula (mantém largura flexível) */
 .form-group-inline #enrollment,
@@ -271,30 +339,26 @@ p.error-message {
   min-width: var(--concise-enrollment-min-width);
 }
 
-/* Estilo específico para o campo de Ano Atual */
+/* Estilo específico para o campo de Ano Atual (criação/edição/filtro) */
 .form-group-inline #new-current-year-group,
-.form-group-inline [id^="edit-current-year-group-"] {
+.form-group-inline [id^="edit-current-year-group-"],
+.filter-form #filter-year-group {
   flex: 0 0 auto;
   width: var(--concise-year-width);
   min-width: unset;
 }
 
-/* Estilo específico para o campo de Turno */
+/* Estilo específico para o campo de Turno (criação/edição/filtro) */
 .form-group-inline #new-shift-group,
-.form-group-inline [id^="edit-shift-group-"] {
+.form-group-inline [id^="edit-shift-group-"],
+.filter-form #filter-shift-group {
   flex: 0 0 auto;
   width: var(--concise-shift-width);
   min-width: unset;
 }
 
-/* Container para o botão "Criar Aluno" */
-.form-button-container {
-  flex: 0 0 auto;
-  margin-left: auto;
-  align-self: flex-end;
-  margin-bottom: var(--spacing-xs);
-}
 
+/* Outros inputs dentro de form-group-inline */
 .form-group-inline input {
   width: 100%;
 }
@@ -303,7 +367,7 @@ p.error-message {
 /* --- Media Queries para Responsividade --- */
 
 /* Telas menores que 768px (tablets e smartphones) */
-@media (max-width: 48rem) { /* 768px / 16 = 48rem */
+@media (max-width: 48rem) {
   .App {
     padding: var(--spacing-lg);
   }
@@ -317,43 +381,52 @@ p.error-message {
   .form-group-inline {
     flex-direction: column;
     gap: 0;
-    align-items: stretch;
+    align-items: stretch; /* Estica para preencher a largura */
   }
 
   .form-group-inline > div {
     flex: unset;
     min-width: unset;
+    /* Restaura a margem inferior para espaçamento vertical em colunas */
+    margin-bottom: var(--form-field-margin-bottom);
   }
 
-  /* Em telas pequenas, todos os campos voltam a ocupar a largura total */
+  /* Em telas pequenas, todos os campos e o container de botões voltam a ocupar a largura total */
   .form-group-inline #new-current-year-group,
   .form-group-inline [id^="edit-current-year-group-"],
   .form-group-inline #new-shift-group,
   .form-group-inline [id^="edit-shift-group-"],
   .form-group-inline #enrollment,
-  .form-group-inline [id^="edit-enrollment-"] {
-    width: 100%;
-    flex: unset;
-  }
-
-  /* Botão em telas pequenas */
+  .form-group-inline [id^="edit-enrollment-"],
+  .filter-form #filter-year-group,
+  .filter-form #filter-shift-group,
   .form-button-container {
     width: 100%;
+    flex: unset;
     margin-left: 0;
-    margin-top: var(--spacing-lg);
     text-align: center;
+  }
+
+  /* Redefine a margem para espaçamento em mobile */
+  .form-button-container {
+      margin-top: var(--spacing-lg);
+      margin-bottom: var(--spacing-md);
+      justify-content: stretch; /* Estica os botões se eles ocuparem 100% */
   }
 
   .form-button-container button {
       width: 100%;
-      margin-left: 0;
-      margin-right: 0;
+      margin: 0;
+      padding: var(--button-padding-y-mobile) var(--button-padding-x-mobile);
   }
+
 
   input[type="text"],
   input[type="number"] {
     width: calc(100% - (var(--input-padding-mobile) * 2) - (var(--border-width) * 2));
     padding: var(--input-padding-mobile);
+    /* Remove margin-bottom aqui também, pois o div pai já terá a margem */
+    margin-bottom: 0;
   }
 
   button {
@@ -361,14 +434,23 @@ p.error-message {
     font-size: 0.9em;
     margin: var(--spacing-xxs);
     flex-grow: 1;
+    /* Remove margin-bottom aqui também */
+    margin-bottom: 0;
   }
 
   /* Ajuste para botões de ação na lista em telas pequenas */
-  li button {
-    padding: var(--button-padding-y-mobile) var(--button-padding-x-mobile); /* Volta ao padding padrão mobile */
-    width: 100%; /* Em mobile, eles voltam a ocupar 100% da largura */
+  .list-buttons-container {
+    width: 100%;
     margin-left: 0;
-    margin-top: var(--spacing-xs); /* Espaçamento entre os botões empilhados */
+    margin-top: var(--spacing-md);
+    justify-content: stretch;
+    gap: var(--spacing-xs);
+  }
+
+  .list-buttons-container button {
+    padding: var(--button-padding-y-mobile) var(--button-padding-x-mobile);
+    width: 100%;
+    margin: 0;
   }
 
   li {
@@ -382,7 +464,7 @@ p.error-message {
     margin-right: 0;
   }
 
-  li > *:not(strong) {
+  li > *:not(strong):not(.list-buttons-container) {
     width: 100%;
     margin-left: 0;
     margin-top: var(--spacing-xs);
@@ -394,7 +476,7 @@ p.error-message {
 }
 
 /* Telas muito pequenas (smartphones em modo retrato) */
-@media (max-width: 30rem) { /* 480px / 16 = 30rem */
+@media (max-width: 30rem) {
   #root {
     padding: 1rem;
   }
