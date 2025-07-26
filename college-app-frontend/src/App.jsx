@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import './App.css'; // Importa o ficheiro CSS para estilização - Descomente esta linha
+import './App.css'; 
 
 function App() {
   const [students, setStudents] = useState([]);
@@ -11,23 +11,21 @@ function App() {
   const [newEnrollment, setNewEnrollment] = useState('');
   const [newCurrentYear, setNewCurrentYear] = useState('');
   const [newShift, setNewShift] = useState('');
-  const [formMessage, setFormMessage] = useState(''); // Para mensagens de sucesso/erro do formulário de criação
+  const [formMessage, setFormMessage] = useState('');
 
   // Estados para edição
-  const [editingStudentId, setEditingStudentId] = useState(null); // ID do aluno a ser editado
+  const [editingStudentId, setEditingStudentId] = useState(null);
   const [editName, setEditName] = useState('');
   const [editEnrollment, setEditEnrollment] = useState('');
   const [editCurrentYear, setEditCurrentYear] = useState('');
   const [editShift, setEditShift] = useState('');
-  const [editMessage, setEditMessage] = useState(''); // Mensagens para o formulário de edição
+  const [editMessage, setEditMessage] = useState('');
 
-  // Função para buscar os alunos (reutilizada)
   const fetchStudents = () => {
-    setLoading(true); // Ativa o carregamento ao buscar
-    fetch('/api/students') // Alterado de volta para URL relativo
+    setLoading(true);
+    fetch('/api/students')
       .then(response => {
         if (!response.ok) {
-          // Tenta ler a mensagem de erro da API se a resposta não for OK
           return response.json().then(err => { throw new Error(err.message || 'Erro desconhecido da API'); });
         }
         return response.json();
@@ -43,32 +41,29 @@ function App() {
       });
   };
 
-  // Chama fetchStudents ao montar o componente
   useEffect(() => {
     fetchStudents();
   }, []);
 
-  // Handler para submissão do formulário de CRIAÇÃO
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Previne o comportamento padrão de recarregar a página
+    e.preventDefault();
 
-    setFormMessage(''); // Limpa mensagens anteriores
+    setFormMessage('');
 
-    // Validação básica do formulário
     if (!newName || !newEnrollment || !newCurrentYear || !newShift) {
-      setFormMessage('Erro: Todos os campos são obrigatórios!'); // Mensagem de erro
+      setFormMessage('Erro: Todos os campos são obrigatórios!');
       return;
     }
 
     const studentData = {
       name: newName,
       enrollment: newEnrollment,
-      current_year: parseInt(newCurrentYear, 10), // Converte para número inteiro
+      current_year: parseInt(newCurrentYear, 10),
       shift: newShift,
     };
 
     try {
-      const response = await fetch('/api/students', { // Alterado de volta para URL relativo
+      const response = await fetch('/api/students', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -79,66 +74,62 @@ function App() {
       const result = await response.json();
 
       if (!response.ok) {
-        // Se a resposta não for OK (ex: 400 Bad Request, 500 Internal Server Error)
         throw new Error(result.message || 'Erro ao criar aluno');
       }
 
-      setFormMessage('Sucesso: Aluno criado com sucesso!'); // Mensagem de sucesso
+      setFormMessage('Sucesso: Aluno criado com sucesso!');
       setNewName('');
       setNewEnrollment('');
       setNewCurrentYear('');
       setNewShift('');
-      fetchStudents(); // Recarrega a lista de alunos após a criação
+      fetchStudents();
     } catch (err) {
-      setFormMessage(`Erro: ${err.message}`); // Mensagem de erro
+      setFormMessage(`Erro: ${err.message}`);
       console.error("Erro ao enviar formulário:", err);
     }
   };
 
-  // Handler para DELETAR um aluno
   const handleDeleteStudent = async (id) => {
     if (window.confirm('Tem certeza que deseja excluir este aluno?')) {
       try {
-        const response = await fetch(`/api/students/${id}`, { // Alterado de volta para URL relativo
+        const response = await fetch(`/api/students/${id}`, {
           method: 'DELETE',
         });
 
         if (!response.ok) {
-          const errorData = await response.json(); // Tenta ler a mensagem de erro da API
+          const errorData = await response.json();
           throw new Error(errorData.message || `Erro ao excluir aluno com ID: ${id}`);
         }
 
-        setFormMessage('Sucesso: Aluno excluído com sucesso!'); // Mensagem de sucesso
-        fetchStudents(); // Recarrega a lista
+        setFormMessage('Sucesso: Aluno excluído com sucesso!');
+        fetchStudents();
       } catch (err) {
-        setFormMessage(`Erro ao excluir: ${err.message}`); // Mensagem de erro
+        setFormMessage(`Erro ao excluir: ${err.message}`);
         console.error("Erro ao excluir aluno:", err);
       }
     }
   };
 
-  // Handler para iniciar a EDIÇÃO de um aluno
   const handleEditStudent = (student) => {
     setEditingStudentId(student.id);
     setEditName(student.name);
     setEditEnrollment(student.enrollment);
-    setEditCurrentYear(student.current_year.toString()); // Converte para string para o input
+    setEditCurrentYear(student.current_year.toString());
     setEditShift(student.shift);
-    setEditMessage(''); // Limpa mensagens anteriores
+    setEditMessage('');
   };
 
-  // Handler para SALVAR a EDIÇÃO de um aluno
   const handleSaveEdit = async (e) => {
     e.preventDefault();
     setEditMessage('');
 
     if (!editName || !editEnrollment || !editCurrentYear || !editShift) {
-      setEditMessage('Erro: Todos os campos são obrigatórios!'); // Mensagem de erro
+      setEditMessage('Erro: Todos os campos são obrigatórios!');
       return;
     }
 
     const updatedStudentData = {
-      id: editingStudentId, // O ID é importante para a requisição PUT
+      id: editingStudentId,
       name: editName,
       enrollment: editEnrollment,
       current_year: parseInt(editCurrentYear, 10),
@@ -146,7 +137,7 @@ function App() {
     };
 
     try {
-      const response = await fetch(`/api/students/${editingStudentId}`, { // Alterado de volta para URL relativo
+      const response = await fetch(`/api/students/${editingStudentId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -160,16 +151,15 @@ function App() {
         throw new Error(result.message || 'Erro ao atualizar aluno');
       }
 
-      setEditMessage('Sucesso: Aluno atualizado com sucesso!'); // Mensagem de sucesso
-      setEditingStudentId(null); // Sai do modo de edição
-      fetchStudents(); // Recarrega a lista
+      setEditMessage('Sucesso: Aluno atualizado com sucesso!');
+      setEditingStudentId(null);
+      fetchStudents();
     } catch (err) {
-      setEditMessage(`Erro: ${err.message}`); // Mensagem de erro
+      setEditMessage(`Erro: ${err.message}`);
       console.error("Erro ao atualizar aluno:", err);
     }
   };
 
-  // Handler para CANCELAR a edição
   const handleCancelEdit = () => {
     setEditingStudentId(null);
     setEditMessage('');
@@ -191,51 +181,55 @@ function App() {
       <h2>Adicionar Novo Aluno</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="name">Nome:</label>
+          {/* Removido a label "Nome:" e adicionado placeholder */}
+          {/* <label htmlFor="name">Nome:</label> */}
           <input
             type="text"
             id="name"
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
+            placeholder="Nome:"
             required
           />
         </div>
-        {/* Novos campos agrupados para ficarem na mesma linha */}
         <div className="form-group-inline">
             <div>
-                <label htmlFor="enrollment">Matrícula:</label>
+                {/* Removido a label "Matrícula:" e adicionado placeholder */}
+                {/* <label htmlFor="enrollment">Matrícula:</label> */}
                 <input
                     type="text"
                     id="enrollment"
                     value={newEnrollment}
                     onChange={(e) => setNewEnrollment(e.target.value)}
+                    placeholder="Matrícula:" /* Adicionado placeholder */
                     required
                 />
             </div>
-            {/* Adicionado um ID específico para o div do Ano Atual para controle de largura */}
             <div id="new-current-year-group">
-                <label htmlFor="new_current_year">Ano Atual:</label>
+                {/* Removido a label "Ano Atual:" e adicionado placeholder */}
+                {/* <label htmlFor="new_current_year">Ano Atual:</label> */}
                 <input
                     type="number"
                     id="new_current_year"
                     value={newCurrentYear}
                     onChange={(e) => setNewCurrentYear(e.target.value)}
+                    placeholder="Ano Atual:" /* Adicionado placeholder */
                     required
                 />
             </div>
-            {/* Adicionado um ID específico para o div do Turno para controle de largura */}
             <div id="new-shift-group">
-                <label htmlFor="new_shift">Turno (M/T/N):</label>
+                {/* Removido a label "Turno (M/T/N):" e adicionado placeholder */}
+                {/* <label htmlFor="new_shift">Turno (M/T/N):</label> */}
                 <input
                     type="text"
                     id="new_shift"
                     value={newShift}
                     onChange={(e) => setNewShift(e.target.value)}
+                    placeholder="Turno (M/T/N):"
                     maxLength="1"
                     required
                 />
             </div>
-            {/* Botão "Criar Aluno" movido para dentro do form-group-inline */}
             <div className="form-button-container">
                 <button type="submit" className="create-button">Criar Aluno</button>
             </div>
@@ -264,51 +258,55 @@ function App() {
                 <form onSubmit={handleSaveEdit}>
                   <h3>Editando Aluno: {student.name}</h3>
                   <div>
-                    <label htmlFor={`edit-name-${student.id}`}>Nome:</label>
+                    {/* Removido a label "Nome:" e adicionado placeholder */}
+                    {/* <label htmlFor={`edit-name-${student.id}`}>Nome:</label> */}
                     <input
                       type="text"
                       id={`edit-name-${student.id}`}
                       value={editName}
                       onChange={(e) => setEditName(e.target.value)}
+                      placeholder="Nome:"
                       required
                     />
                   </div>
-                  {/* Campos de edição agrupados para ficarem na mesma linha */}
                   <div className="form-group-inline">
                     <div>
-                        <label htmlFor={`edit-enrollment-${student.id}`}>Matrícula:</label>
+                        {/* Removido a label "Matrícula:" e adicionado placeholder */}
+                        {/* <label htmlFor={`edit-enrollment-${student.id}`}>Matrícula:</label> */}
                         <input
                             type="text"
                             id={`edit-enrollment-${student.id}`}
                             value={editEnrollment}
                             onChange={(e) => setEditEnrollment(e.target.value)}
+                            placeholder="Matrícula:" /* Adicionado placeholder */
                             required
                         />
                     </div>
-                    {/* Adicionado um ID específico para o div do Ano Atual para controle de largura */}
                     <div id={`edit-current-year-group-${student.id}`}>
-                        <label htmlFor={`edit-current_year-${student.id}`}>Ano Atual:</label>
+                        {/* Removido a label "Ano Atual:" e adicionado placeholder */}
+                        {/* <label htmlFor={`edit-current_year-${student.id}`}>Ano Atual:</label> */}
                         <input
                             type="number"
                             id={`edit-current_year-${student.id}`}
                             value={editCurrentYear}
                             onChange={(e) => setEditCurrentYear(e.target.value)}
+                            placeholder="Ano Atual:" /* Adicionado placeholder */
                             required
                         />
                     </div>
-                    {/* Adicionado um ID específico para o div do Turno para controle de largura */}
                     <div id={`edit-shift-group-${student.id}`}>
-                        <label htmlFor={`edit-shift-${student.id}`}>Turno (M/T/N):</label>
+                        {/* Removido a label "Turno (M/T/N):" e adicionado placeholder */}
+                        {/* <label htmlFor={`edit-shift-${student.id}`}>Turno (M/T/N):</label> */}
                         <input
                             type="text"
                             id={`edit-shift-${student.id}`}
                             value={editShift}
                             onChange={(e) => setEditShift(e.target.value)}
+                            placeholder="Turno (M/T/N):" /* Adicionado placeholder */
                             maxLength="1"
                             required
                         />
                     </div>
-                    {/* Botões de edição e cancelamento movidos para dentro do form-group-inline */}
                     <div className="form-button-container">
                         <button type="submit" className="edit-button">Salvar Edição</button>
                         <button type="button" className="cancel-button" onClick={handleCancelEdit}>Cancelar</button>

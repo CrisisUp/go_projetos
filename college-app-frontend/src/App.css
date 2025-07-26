@@ -1,127 +1,201 @@
+/* Definição das variáveis CSS */
+:root {
+  /* Cores */
+  --primary-color: #007bff; /* Azul para ações primárias/edição */
+  --primary-color-hover: #0056b3; /* Azul mais escuro para hover */
+  --secondary-color: #6c757d; /* Cinza para detalhes/informação */
+  --secondary-color-hover: #5a6268; /* Cinza mais escuro para hover */
+  --success-color: #28a745; /* Verde para sucesso/criação */
+  --success-color-hover: #218838; /* Verde mais escuro para hover */
+  --danger-color: #dc3545; /* Vermelho para perigo/exclusão */
+  --danger-color-hover: #c82333; /* Vermelho mais escuro para hover */
+  --warning-color: #ffc107; /* Amarelo/Laranja para cancelamento */
+  --warning-color-hover: #e0a800; /* Amarelo mais escuro para hover */
+  --text-color-dark: #333; /* Texto escuro geral */
+  --text-color-medium: #555; /* Texto médio */
+  --text-color-light: #f9f9f9; /* Fundo claro */
+  --text-color-white: #fff; /* Texto branco */
+  --header-color: #2c3e50; /* Cor dos títulos */
+  --border-color: #ccc; /* Cor da borda padrão */
+  --list-border-color: #ddd; /* Cor da borda da lista */
+  --shadow-color: rgba(0, 0, 0, 0.1); /* Sombra padrão */
+  --shadow-color-light: rgba(0, 0, 0, 0.05); /* Sombra mais leve */
+  --focus-shadow-color: rgba(0, 123, 255, 0.25); /* Sombra ao focar input */
+
+  /* Medidas/Espaçamentos (agora em REM, base 16px) */
+  --root-font-size: 16px; /* Base para 1rem, pode ser alterado se quiser uma escala base diferente */
+
+  --spacing-xxs: 0.1875rem; /* 3px / 16 = 0.1875rem */
+  --spacing-xs: 0.3125rem;  /* 5px / 16 = 0.3125rem */
+  --spacing-sm: 0.5rem;     /* 8px / 16 = 0.5rem */
+  --spacing-md: 0.625rem;   /* 10px / 16 = 0.625rem */
+  --spacing-lg: 0.9375rem;  /* 15px / 16 = 0.9375rem */
+  --spacing-xl: 1.25rem;    /* 20px / 16 = 1.25rem */
+  --spacing-xxl: 1.875rem;  /* 30px / 16 = 1.875rem */
+  --spacing-xxxl: 2.5rem;   /* 40px / 16 = 2.5rem */
+
+  --border-width: 1px; /* Bordas geralmente mantêm PX */
+  --border-radius-sm: 0.25rem; /* 4px / 16 = 0.25rem */
+  --border-radius-md: 0.3125rem; /* 5px / 16 = 0.3125rem */
+  --border-radius-lg: 0.5rem; /* 8px / 16 = 0.5rem */
+
+  --input-padding: 0.625rem; /* 10px */
+  --input-padding-mobile: 0.5rem; /* 8px */
+
+  --button-padding-y: 0.625rem; /* 10px */
+  --button-padding-x: 1.25rem; /* 20px */
+  --button-padding-y-mobile: 0.5rem; /* 8px */
+  --button-padding-x-mobile: 0.9375rem; /* 15px */
+  --button-padding-y-mobile-xs: 0.375rem; /* 6px */
+  --button-padding-x-mobile-xs: 0.625rem; /* 10px */
+
+  --button-margin: var(--spacing-xs); /* 5px */
+  --button-font-size: 0.95em; /* 'em' é bom para fontes relacionadas ao pai */
+
+  /* Larguras específicas para botões de ação na lista (novas variáveis) */
+  --list-button-width: 5.5rem; /* 88px, valor ajustado para ser mais conciso */
+  --list-button-margin-left: var(--spacing-xs); /* 5px */
+
+  --list-item-padding: 0.9375rem; /* 15px */
+  --list-item-margin-bottom: 0.625rem; /* 10px */
+
+  --form-field-margin-bottom: 0.9375rem; /* 15px */
+  --form-label-margin-bottom: var(--spacing-xs); /* 5px */
+
+  --header-margin-bottom: 1.25rem; /* 20px */
+  --hr-height: 1px; /* Mantém em PX */
+
+  /* Larguras específicas para campos concisos */
+  --concise-year-width: 6.25rem; /* 100px */
+  --concise-shift-width: 5rem; /* 80px */
+  --concise-enrollment-min-width: 9.375rem; /* 150px */
+}
+
+
 /* Estilos gerais para a aplicação */
 #root {
-  max-width: 1280px;
+  max-width: 80rem; /* 1280px / 16 = 80rem */
   margin: 0 auto;
-  padding: 2rem;
+  padding: 2rem; /* Já estava em rem */
   text-align: center;
 }
 
 .App {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #333;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  margin-bottom: 30px;
+  color: var(--text-color-dark);
+  background-color: var(--text-color-light);
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 4px 8px var(--shadow-color);
+  padding: var(--spacing-xl);
+  margin-bottom: var(--spacing-xxl);
 }
 
 h1, h2 {
-  color: #2c3e50;
-  margin-bottom: 20px;
+  color: var(--header-color);
+  margin-bottom: var(--header-margin-bottom);
 }
 
 hr {
   border: 0;
-  height: 1px;
-  background-color: #ccc;
-  margin: 40px 0;
+  height: var(--hr-height);
+  background-color: var(--border-color);
+  margin: var(--spacing-xxxl) 0;
 }
 
 /* Estilos para Formulários */
 form div {
-  margin-bottom: 15px;
+  margin-bottom: var(--form-field-margin-bottom);
   text-align: left;
 }
 
 label {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: var(--form-label-margin-bottom);
   font-weight: bold;
-  color: #555;
+  color: var(--text-color-medium);
 }
 
 input[type="text"],
 input[type="number"] {
-  width: calc(100% - 22px); /* Considerando padding e border */
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  width: calc(100% - (var(--input-padding) * 2) - (var(--border-width) * 2)); /* Considerando padding e border */
+  padding: var(--input-padding);
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--border-radius-sm);
   font-size: 1em;
 }
 
 input:focus {
-  border-color: #007bff;
+  border-color: var(--primary-color);
   outline: none;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  box-shadow: 0 0 0 2px var(--focus-shadow-color);
 }
 
 /* Estilos para Botões */
 button {
-  padding: 10px 20px;
-  margin: 5px;
+  padding: var(--button-padding-y) var(--button-padding-x);
+  margin: var(--button-margin);
   border: none;
-  border-radius: 5px;
+  border-radius: var(--border-radius-md);
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
-  font-size: 0.95em;
+  font-size: var(--button-font-size);
 }
 
 /* Botões Padrão/Criar */
 button[type="submit"],
 button.create-button {
-  background-color: #28a745;
-  color: white;
+  background-color: var(--success-color);
+  color: var(--text-color-white);
 }
 
 button[type="submit"]:hover,
 button.create-button:hover {
-  background-color: #218838;
-  transform: translateY(-1px);
+  background-color: var(--success-color-hover);
+  transform: translateY(-var(--border-width));
 }
 
 /* Botão Editar */
 button.edit-button {
-  background-color: #007bff;
-  color: white;
+  background-color: var(--primary-color);
+  color: var(--text-color-white);
 }
 
 button.edit-button:hover {
-  background-color: #0056b3;
-  transform: translateY(-1px);
+  background-color: var(--primary-color-hover);
+  transform: translateY(-var(--border-width));
 }
 
 /* Botão Detalhes */
 button.details-button {
-  background-color: #6c757d;
-  color: white;
+  background-color: var(--secondary-color);
+  color: var(--text-color-white);
 }
 
 button.details-button:hover {
-  background-color: #5a6268;
-  transform: translateY(-1px);
+  background-color: var(--secondary-color-hover);
+  transform: translateY(-var(--border-width));
 }
 
 /* Botão Excluir */
 button.delete-button {
-  background-color: #dc3545;
-  color: white;
+  background-color: var(--danger-color);
+  color: var(--text-color-white);
 }
 
 button.delete-button:hover {
-  background-color: #c82333;
-  transform: translateY(-1px);
+  background-color: var(--danger-color-hover);
+  transform: translateY(-var(--border-width));
 }
 
 /* Botão Cancelar */
 button.cancel-button {
-  background-color: #ffc107;
-  color: #333;
+  background-color: var(--warning-color);
+  color: var(--text-color-dark);
 }
 button.cancel-button:hover {
-  background-color: #e0a800;
-  transform: translateY(-1px);
+  background-color: var(--warning-color-hover);
+  transform: translateY(-var(--border-width));
 }
 
 /* Lista de Alunos */
@@ -131,41 +205,46 @@ ul {
 }
 
 li {
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  margin-bottom: 10px;
-  padding: 15px;
+  background-color: var(--text-color-white);
+  border: var(--border-width) solid var(--list-border-color);
+  border-radius: var(--border-radius-sm);
+  margin-bottom: var(--list-item-margin-bottom);
+  padding: var(--list-item-padding);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 4px var(--shadow-color-light);
 }
 
 li strong {
-  margin-right: 10px;
-  color: #34495e;
+  margin-right: var(--spacing-md);
+  color: var(--header-color);
 }
 
+/* Ajuste para botões de ação na lista (Detalhes, Editar, Excluir) */
 li button {
-  margin-left: 10px;
+  /* Substitui margin-left: 10px; */
+  margin-left: var(--list-button-margin-left);
+  /* Faz com que cada botão não cresça ou encolha, tendo uma largura fixa */
+  flex: 0 0 auto;
+  width: var(--list-button-width);
 }
 
 p {
-  margin-top: 10px;
+  margin-top: var(--spacing-md);
   font-style: italic;
-  color: #666;
+  color: var(--secondary-color);
 }
 
 /* Mensagens de Formulário */
 p.success-message {
-  color: #28a745;
+  color: var(--success-color);
   font-weight: bold;
 }
 
 p.error-message {
-  color: #dc3545;
+  color: var(--danger-color);
   font-weight: bold;
 }
 
@@ -173,70 +252,70 @@ p.error-message {
 .form-group-inline {
   display: flex;
   flex-wrap: wrap;
-  gap: 30px;
-  margin-bottom: 15px;
-  align-items: flex-end; /* Alinha os itens pela base */
+  gap: var(--spacing-xxl);
+  margin-bottom: var(--form-field-margin-bottom);
+  align-items: flex-end;
 }
 
 .form-group-inline > div {
   flex: 1;
-  min-width: 120px;
+  min-width: 7.5rem; /* 120px / 16 = 7.5rem */
 }
 
 /* Estilo específico para o campo de Matrícula (mantém largura flexível) */
 .form-group-inline #enrollment,
 .form-group-inline [id^="edit-enrollment-"] {
-  flex: 1; /* Permite que cresça e ocupe o espaço restante */
-  min-width: 150px; /* Um pouco mais de largura para matrícula */
+  flex: 1;
+  min-width: var(--concise-enrollment-min-width);
 }
 
 /* Estilo específico para o campo de Ano Atual */
 .form-group-inline #new-current-year-group,
 .form-group-inline [id^="edit-current-year-group-"] {
-  flex: 0 0 auto; /* Não cresce, não encolhe, largura automática */
-  width: 100px; /* Largura fixa menor para Ano Atual */
-  min-width: unset; /* Remove min-width do pai */
+  flex: 0 0 auto;
+  width: var(--concise-year-width);
+  min-width: unset;
 }
 
 /* Estilo específico para o campo de Turno */
 .form-group-inline #new-shift-group,
 .form-group-inline [id^="edit-shift-group-"] {
-  flex: 0 0 auto; /* Não cresce, não encolhe, largura automática */
-  width: 80px; /* Largura fixa menor para Turno */
-  min-width: unset; /* Remove min-width do pai */
+  flex: 0 0 auto;
+  width: var(--concise-shift-width);
+  min-width: unset;
 }
 
 /* Container para o botão "Criar Aluno" */
 .form-button-container {
-  flex: 0 0 auto; /* Não cresce, não encolhe, largura automática */
-  margin-left: auto; /* Empurra o container para a direita */
-  align-self: flex-end; /* Alinha o botão à base dos outros inputs */
-  margin-bottom: 5px; /* Ajuste para alinhar com a base dos inputs */
+  flex: 0 0 auto;
+  margin-left: auto;
+  align-self: flex-end;
+  margin-bottom: var(--spacing-xs);
 }
 
 .form-group-inline input {
-  width: 100%; /* Ocupa 100% do seu flex item pai (div) */
+  width: 100%;
 }
 
 
 /* --- Media Queries para Responsividade --- */
 
 /* Telas menores que 768px (tablets e smartphones) */
-@media (max-width: 768px) {
+@media (max-width: 48rem) { /* 768px / 16 = 48rem */
   .App {
-    padding: 15px;
+    padding: var(--spacing-lg);
   }
 
   h1, h2 {
     font-size: 1.8em;
-    margin-bottom: 15px;
+    margin-bottom: var(--spacing-lg);
   }
 
   /* Ajustes para formulário in-line em telas menores */
   .form-group-inline {
     flex-direction: column;
     gap: 0;
-    align-items: stretch; /* Estica os itens para preencher a largura */
+    align-items: stretch;
   }
 
   .form-group-inline > div {
@@ -251,7 +330,7 @@ p.error-message {
   .form-group-inline [id^="edit-shift-group-"],
   .form-group-inline #enrollment,
   .form-group-inline [id^="edit-enrollment-"] {
-    width: 100%; /* Ajusta a largura do input como os outros */
+    width: 100%;
     flex: unset;
   }
 
@@ -259,66 +338,68 @@ p.error-message {
   .form-button-container {
     width: 100%;
     margin-left: 0;
-    margin-top: 15px; /* Espaçamento acima do botão */
-    text-align: center; /* Centraliza o botão se ele não ocupar 100% */
+    margin-top: var(--spacing-lg);
+    text-align: center;
   }
 
   .form-button-container button {
-      width: 100%; /* Botões ocupam largura total em telas menores */
+      width: 100%;
       margin-left: 0;
       margin-right: 0;
   }
 
-
   input[type="text"],
   input[type="number"] {
-    width: calc(100% - 20px);
-    padding: 8px;
+    width: calc(100% - (var(--input-padding-mobile) * 2) - (var(--border-width) * 2));
+    padding: var(--input-padding-mobile);
   }
 
   button {
-    padding: 8px 15px;
+    padding: var(--button-padding-y-mobile) var(--button-padding-x-mobile);
     font-size: 0.9em;
-    margin: 3px;
+    margin: var(--spacing-xxs);
     flex-grow: 1;
+  }
+
+  /* Ajuste para botões de ação na lista em telas pequenas */
+  li button {
+    width: 100%; /* Em mobile, eles voltam a ocupar 100% da largura */
+    margin-left: 0;
+    margin-top: var(--spacing-xs); /* Espaçamento entre os botões empilhados */
   }
 
   li {
     flex-direction: column;
     align-items: flex-start;
-    padding: 10px;
+    padding: var(--spacing-md);
   }
 
   li strong {
-    margin-bottom: 5px;
+    margin-bottom: var(--spacing-xs);
     margin-right: 0;
   }
 
   li > *:not(strong) {
     width: 100%;
     margin-left: 0;
-    margin-top: 5px;
+    margin-top: var(--spacing-xs);
   }
 
   li form div {
     width: 100%;
   }
 
-  li button {
-    width: 100%;
-    margin-left: 0;
-    margin-top: 8px;
-  }
+  /* Li button já foi tratado acima, removido duplicidade */
 }
 
 /* Telas muito pequenas (smartphones em modo retrato) */
-@media (max-width: 480px) {
+@media (max-width: 30rem) { /* 480px / 16 = 30rem */
   #root {
     padding: 1rem;
   }
 
   .App {
-    padding: 10px;
+    padding: var(--spacing-md);
   }
 
   h1 {
@@ -331,10 +412,10 @@ p.error-message {
 
   button {
     font-size: 0.85em;
-    padding: 6px 10px;
+    padding: var(--button-padding-y-mobile-xs) var(--button-padding-x-mobile-xs);
   }
 
   li {
-    padding: 8px;
+    padding: var(--spacing-sm);
   }
 }
