@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
 /* Definição das variáveis CSS */
 :root {
   /* Cores */
@@ -53,7 +55,8 @@
   --button-font-size: 0.95em; /* 'em' é bom para fontes relacionadas ao pai */
 
   /* Larguras específicas para botões de ação na lista (novas variáveis) */
-  --list-button-width: 5.5rem; /* 88px, valor ajustado para ser mais conciso */
+  --list-button-width: 4.5rem; /* Reduzido de 5.5rem (88px) para 4.5rem (72px) */
+  --list-button-padding-x: 0.625rem; /* Novo padding X para botões de lista (10px) */
   --list-button-margin-left: var(--spacing-xs); /* 5px */
 
   --list-item-padding: 0.9375rem; /* 15px */
@@ -81,7 +84,7 @@
 }
 
 .App {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Roboto','Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: var(--text-color-dark);
   background-color: var(--text-color-light);
   border-radius: var(--border-radius-lg);
@@ -224,11 +227,10 @@ li strong {
 
 /* Ajuste para botões de ação na lista (Detalhes, Editar, Excluir) */
 li button {
-  /* Substitui margin-left: 10px; */
+  padding: var(--button-padding-y) var(--list-button-padding-x); /* Usando novo padding-x */
   margin-left: var(--list-button-margin-left);
-  /* Faz com que cada botão não cresça ou encolha, tendo uma largura fixa */
   flex: 0 0 auto;
-  width: var(--list-button-width);
+  width: var(--list-button-width); /* Nova largura mais compacta */
 }
 
 p {
@@ -363,6 +365,7 @@ p.error-message {
 
   /* Ajuste para botões de ação na lista em telas pequenas */
   li button {
+    padding: var(--button-padding-y-mobile) var(--button-padding-x-mobile); /* Volta ao padding padrão mobile */
     width: 100%; /* Em mobile, eles voltam a ocupar 100% da largura */
     margin-left: 0;
     margin-top: var(--spacing-xs); /* Espaçamento entre os botões empilhados */
@@ -388,8 +391,6 @@ p.error-message {
   li form div {
     width: 100%;
   }
-
-  /* Li button já foi tratado acima, removido duplicidade */
 }
 
 /* Telas muito pequenas (smartphones em modo retrato) */

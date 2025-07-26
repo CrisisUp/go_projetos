@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import './App.css'; 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faInfoCircle, faEdit, faTrashAlt, faPlus, faSave, faTimes } from '@fortawesome/free-solid-svg-icons'; // Importe os ícones que você vai usar
 
 function App() {
   const [students, setStudents] = useState([]);
@@ -181,8 +183,6 @@ function App() {
       <h2>Adicionar Novo Aluno</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          {/* Removido a label "Nome:" e adicionado placeholder */}
-          {/* <label htmlFor="name">Nome:</label> */}
           <input
             type="text"
             id="name"
@@ -194,32 +194,26 @@ function App() {
         </div>
         <div className="form-group-inline">
             <div>
-                {/* Removido a label "Matrícula:" e adicionado placeholder */}
-                {/* <label htmlFor="enrollment">Matrícula:</label> */}
                 <input
                     type="text"
                     id="enrollment"
                     value={newEnrollment}
                     onChange={(e) => setNewEnrollment(e.target.value)}
-                    placeholder="Matrícula:" /* Adicionado placeholder */
+                    placeholder="Matrícula:"
                     required
                 />
             </div>
             <div id="new-current-year-group">
-                {/* Removido a label "Ano Atual:" e adicionado placeholder */}
-                {/* <label htmlFor="new_current_year">Ano Atual:</label> */}
                 <input
                     type="number"
                     id="new_current_year"
                     value={newCurrentYear}
                     onChange={(e) => setNewCurrentYear(e.target.value)}
-                    placeholder="Ano Atual:" /* Adicionado placeholder */
+                    placeholder="Ano Atual:"
                     required
                 />
             </div>
             <div id="new-shift-group">
-                {/* Removido a label "Turno (M/T/N):" e adicionado placeholder */}
-                {/* <label htmlFor="new_shift">Turno (M/T/N):</label> */}
                 <input
                     type="text"
                     id="new_shift"
@@ -231,7 +225,9 @@ function App() {
                 />
             </div>
             <div className="form-button-container">
-                <button type="submit" className="create-button">Criar Aluno</button>
+                <button type="submit" className="create-button">
+                    <FontAwesomeIcon icon={faPlus} /> Criar Aluno {/* Ícone para Criar */}
+                </button>
             </div>
         </div>
       </form>
@@ -258,8 +254,6 @@ function App() {
                 <form onSubmit={handleSaveEdit}>
                   <h3>Editando Aluno: {student.name}</h3>
                   <div>
-                    {/* Removido a label "Nome:" e adicionado placeholder */}
-                    {/* <label htmlFor={`edit-name-${student.id}`}>Nome:</label> */}
                     <input
                       type="text"
                       id={`edit-name-${student.id}`}
@@ -271,45 +265,43 @@ function App() {
                   </div>
                   <div className="form-group-inline">
                     <div>
-                        {/* Removido a label "Matrícula:" e adicionado placeholder */}
-                        {/* <label htmlFor={`edit-enrollment-${student.id}`}>Matrícula:</label> */}
                         <input
                             type="text"
                             id={`edit-enrollment-${student.id}`}
                             value={editEnrollment}
                             onChange={(e) => setEditEnrollment(e.target.value)}
-                            placeholder="Matrícula:" /* Adicionado placeholder */
+                            placeholder="Matrícula:"
                             required
                         />
                     </div>
                     <div id={`edit-current-year-group-${student.id}`}>
-                        {/* Removido a label "Ano Atual:" e adicionado placeholder */}
-                        {/* <label htmlFor={`edit-current_year-${student.id}`}>Ano Atual:</label> */}
                         <input
                             type="number"
                             id={`edit-current_year-${student.id}`}
                             value={editCurrentYear}
                             onChange={(e) => setEditCurrentYear(e.target.value)}
-                            placeholder="Ano Atual:" /* Adicionado placeholder */
+                            placeholder="Ano Atual:"
                             required
                         />
                     </div>
                     <div id={`edit-shift-group-${student.id}`}>
-                        {/* Removido a label "Turno (M/T/N):" e adicionado placeholder */}
-                        {/* <label htmlFor={`edit-shift-${student.id}`}>Turno (M/T/N):</label> */}
                         <input
                             type="text"
                             id={`edit-shift-${student.id}`}
                             value={editShift}
                             onChange={(e) => setEditShift(e.target.value)}
-                            placeholder="Turno (M/T/N):" /* Adicionado placeholder */
+                            placeholder="Turno (M/T/N):"
                             maxLength="1"
                             required
                         />
                     </div>
                     <div className="form-button-container">
-                        <button type="submit" className="edit-button">Salvar Edição</button>
-                        <button type="button" className="cancel-button" onClick={handleCancelEdit}>Cancelar</button>
+                        <button type="submit" className="edit-button">
+                            <FontAwesomeIcon icon={faSave} /> {/* Ícone para Salvar */}
+                        </button>
+                        <button type="button" className="cancel-button" onClick={handleCancelEdit}>
+                            <FontAwesomeIcon icon={faTimes} /> {/* Ícone para Cancelar */}
+                        </button>
                     </div>
                   </div>
                   {editMessage && (
@@ -321,10 +313,21 @@ function App() {
               ) : (
                 // Visualização Normal do Aluno
                 <>
+                  {/* Informações do aluno */}
                   <strong>{student.name}</strong> ({student.enrollment}) - Ano: {student.current_year}, Turno: {student.shift}
-                  <button className="details-button" onClick={() => alert(`Detalhes de ${student.name}:\nID: ${student.id}\nMatrícula: ${student.enrollment}\nAno: ${student.current_year}\nTurno: ${student.shift}`)}>Detalhes</button>
-                  <button className="edit-button" onClick={() => handleEditStudent(student)}>Editar</button>
-                  <button className="delete-button" onClick={() => handleDeleteStudent(student.id)}>Excluir</button>
+                  
+                  {/* Novo div para agrupar e alinhar os botões de ação */}
+                  <div className="list-buttons-container">
+                      <button className="details-button" onClick={() => alert(`Detalhes de ${student.name}:\nID: ${student.id}\nMatrícula: ${student.enrollment}\nAno: ${student.current_year}\nTurno: ${student.shift}`)}>
+                          <FontAwesomeIcon icon={faInfoCircle} /> {/* Ícone para Detalhes */}
+                      </button>
+                      <button className="edit-button" onClick={() => handleEditStudent(student)}>
+                          <FontAwesomeIcon icon={faEdit} /> {/* Ícone para Editar */}
+                      </button>
+                      <button className="delete-button" onClick={() => handleDeleteStudent(student.id)}>
+                          <FontAwesomeIcon icon={faTrashAlt} /> {/* Ícone para Excluir */}
+                      </button>
+                  </div>
                 </>
               )}
             </li>
