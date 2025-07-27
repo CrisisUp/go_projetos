@@ -1,0 +1,90 @@
+/* src/styles/_forms.css */
+
+/* Estilos gerais para todos os formulários e seus elementos */
+form div {
+    margin-bottom: var(--form-field-margin-bottom);
+    text-align: left;
+    /* Garante que os campos dentro dos divs de form se alinhem à esquerda */
+}
+
+label {
+    display: block;
+    margin-bottom: var(--form-label-margin-bottom);
+    font-weight: bold;
+    color: var(--text-dark);
+}
+
+input[type="text"],
+input[type="number"],
+input[type="email"],
+/* Incluído type="email" */
+.subject-select,
+/* Aplicado ao select geral */
+.select-student-assignment,
+/* Aplicado aos selects de atribuição de alunos */
+.subject-select-assignment {
+    /* Aplicado aos selects de atribuição de matérias */
+    width: 100%;
+    /* 100% com box-sizing: border-box cuida do padding/border */
+    padding: var(--input-padding);
+    border: var(--border-width) solid var(--input-border-default);
+    border-radius: var(--border-radius-sm);
+    font-size: 1em;
+    margin-bottom: 0;
+    /* Zera margem inferior, o div pai já tem a margem */
+    height: var(--input-height);
+    /* Garante altura uniforme com botões */
+    background-color: var(--input-bg-default);
+    color: var(--text-dark);
+}
+
+/* Estilo para placeholders */
+input::placeholder {
+    color: var(--text-placeholder);
+    opacity: 1;
+    /* For Firefox */
+}
+
+input:focus::placeholder {
+    color: transparent;
+    /* Opcional: faz o placeholder desaparecer no foco */
+}
+
+/* Estilo para inputs quando têm valor (como na imagem do dark input) */
+input[type="text"]:not(:placeholder-shown),
+input[type="number"]:not(:placeholder-shown),
+input[type="email"]:not(:placeholder-shown) {
+    background-color: var(--input-bg-filled);
+    color: var(--input-text-filled);
+}
+
+
+/* Estilo de foco para inputs e selects */
+input:focus,
+.subject-select:focus,
+.select-student-assignment:focus,
+.subject-select-assignment:focus {
+    border-color: var(--button-primary);
+    outline: none;
+    box-shadow: var(--shadow-focus);
+}
+
+/* Estilos para grupos de campos em linha (usado no filtro, etc.) */
+.form-group-inline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xxl);
+    /* Espaçamento entre os campos */
+    margin-bottom: var(--form-field-margin-bottom);
+    align-items: center;
+    /* Alinha os itens pela linha do meio verticalmente */
+}
+
+.form-group-inline>div {
+    flex: 1;
+    /* Permite que os divs internos cresçam e encolham */
+    min-width: 7.5rem;
+    /* Largura mínima para os campos */
+    margin-bottom: 0;
+    /* Zera a margem inferior aqui, pois a margem do pai cuida disso */
+}

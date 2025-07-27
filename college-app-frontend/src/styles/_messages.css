@@ -1,0 +1,12 @@
+/* src/styles/_messages.css */
+
+/* Mensagens de Formulário (sucesso/erro) */
+p.success-message {
+    color: var(--button-success);
+    font-weight: bold;
+}
+
+p.error-message {
+    color: var(--button-danger);
+    font-weight: bold;
+}

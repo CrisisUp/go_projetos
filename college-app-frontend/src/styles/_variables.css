@@ -1,0 +1,125 @@
+/* src/styles/_variables.css */
+
+/* Definição das variáveis CSS (Paleta de Cores e Medidas) */
+:root {
+  /* NOVAS CORES baseadas na imagem */
+  --bg-primary: #f8f9fa;
+  /* Fundo principal claro */
+  --bg-secondary: #e9ecef;
+  /* Fundo de elementos secundários (ex: li de matérias atribuídas) */
+  --text-dark: #343a40;
+  /* Texto principal escuro */
+  --text-light: #f8f9fa;
+  /* Texto para fundos escuros */
+  --text-placeholder: #6c757d;
+  /* Cor do placeholder */
+
+  --input-bg-default: #fff;
+  /* Fundo do input normal */
+  --input-border-default: #ced4da;
+  /* Borda do input normal */
+  --input-bg-filled: #495057;
+  /* Fundo do input preenchido (como na imagem) */
+  --input-text-filled: #ffffff;
+  /* Texto do input preenchido */
+
+  --button-primary: #17a2b8;
+  /* Azul vibrante (INFO) para botões principais/aplicar filtro */
+  --button-primary-hover: #138496;
+  /* Azul mais escuro no hover */
+  --button-success: #28a745;
+  /* Verde para sucesso (Criar Aluno) */
+  --button-success-hover: #218838;
+  --button-danger: #dc3545;
+  /* Vermelho para exclusão */
+  --button-danger-hover: #c82333;
+  --button-warning: #ffc107;
+  /* Amarelo/Laranja para cancelar */
+  --button-warning-hover: #e0a800;
+  --button-neutral: #6c757d;
+  /* Novo: cinza para navegação/botões secundários não-primários */
+  --button-neutral-hover: #5a6268;
+
+  --header-color: #343a40;
+  /* Títulos (quase preto) */
+  --border-color-light: #dee2e6;
+  /* Bordas mais claras */
+  --list-border-color: #f8f9fa;
+  /* Borda do item da lista pode ser mais sutil */
+
+  --shadow-subtle: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  /* Sombra mais sutil */
+  --shadow-focus: 0 0 0 0.2rem rgba(23, 162, 184, 0.25);
+  /* Sombra ao focar input */
+
+
+  /* Medidas/Espaçamentos (agora em REM, base 16px) */
+  --root-font-size: 16px;
+
+  --spacing-xxs: 0.1875rem;
+  /* 3px */
+  --spacing-xs: 0.3125rem;
+  /* 5px */
+  --spacing-sm: 0.5rem;
+  /* 8px */
+  --spacing-md: 0.625rem;
+  /* 10px */
+  --spacing-lg: 0.9375rem;
+  /* 15px */
+  --spacing-xl: 1.25rem;
+  /* 20px */
+  --spacing-xxl: 1.25rem;
+  /* Reduzido para 20px */
+  --spacing-xxxl: 2.5rem;
+  /* 40px */
+
+  --border-width: 1px;
+  --border-radius-sm: 0.25rem;
+  --border-radius-md: 0.3125rem;
+  --border-radius-lg: 0.5rem;
+  /* 8px */
+
+  --input-padding: 0.625rem;
+  /* 10px */
+  --input-padding-mobile: 0.5rem;
+  /* 8px */
+
+  --button-padding-y: 0.625rem;
+  /* 10px */
+  --button-padding-x: 1.25rem;
+  /* 20px */
+  --button-padding-y-mobile: 0.5rem;
+  /* 8px */
+  --button-padding-x-mobile: 0.9375rem;
+  /* 15px */
+  --button-padding-y-mobile-xs: 0.375rem;
+  /* 6px */
+  --button-padding-x-mobile-xs: 0.625rem;
+  /* 10px */
+
+  --button-margin: var(--spacing-xs);
+  --button-font-size: 0.95em;
+  --input-height: calc(var(--button-padding-y) * 2 + var(--button-font-size) * 1.2 + var(--border-width) * 2);
+
+
+  --list-button-width: 4.5rem;
+  --list-button-padding-x: 0.625rem;
+  --list-button-gap: var(--spacing-xxs);
+  --icon-text-spacing: 0.3125rem;
+
+  --list-item-padding: 0.9375rem;
+  --list-item-margin-bottom: 0.625rem;
+  --list-item-content-gap: var(--spacing-md);
+
+  --form-field-margin-bottom: 0.9375rem;
+  --form-label-margin-bottom: var(--spacing-xs);
+
+  --header-margin-bottom: 1.25rem;
+  --hr-height: 1px;
+
+  --concise-year-width: 6.25rem;
+  --concise-shift-width: 5rem;
+  --concise-enrollment-min-width: 9.375rem;
+  --filter-year-width: 6.25rem;
+  --filter-shift-width: 5rem;
+}

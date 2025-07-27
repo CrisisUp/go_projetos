@@ -1,0 +1,217 @@
+/* src/styles/_responsive.css */
+
+/* Media Queries para Responsividade */
+
+/* Telas menores que 768px (tablets e smartphones) */
+@media (max-width: 48rem) {
+
+    /* 768px / 16 = 48rem */
+    .App {
+        padding: var(--spacing-lg);
+    }
+
+    /* Títulos em mobile */
+    h1 {
+        font-size: 2em;
+    }
+
+    h2,
+    h3,
+    h4,
+    h5 {
+        font-size: 1.5em;
+        margin-bottom: var(--spacing-md);
+    }
+
+    /* Separador horizontal em mobile */
+    hr {
+        margin: var(--spacing-xxl) 0;
+    }
+
+    /* Ajustes para formulário em linha em telas menores */
+    .form-group-inline {
+        flex-direction: column;
+        /* Empilha os campos verticalmente */
+        gap: 0;
+        /* Remove o espaçamento horizontal */
+        align-items: stretch;
+        /* Estica os itens para preencher a largura */
+    }
+
+    /* Divs internas de form-group-inline em mobile */
+    .form-group-inline>div {
+        flex: unset;
+        /* Remove comportamento flex */
+        min-width: unset;
+        /* Remove largura mínima */
+        margin-bottom: var(--form-field-margin-bottom);
+        /* Restaura margem inferior para espaçamento vertical */
+    }
+
+    /* Elementos de formulário e containers de botão em mobile (largura total) */
+    .form-group-inline #new-current-year-group,
+    .form-group-inline [id^="edit-current-year-group-"],
+    .form-group-inline #new-shift-group,
+    .form-group-inline [id^="edit-shift-group-"],
+    .form-group-inline #enrollment,
+    .form-group-inline [id^="edit-enrollment-"],
+    .filter-form #filter-year-group,
+    .filter-form #filter-shift-group,
+    .form-button-container,
+    .select-container {
+        /* Incluído para selects em mobile */
+        width: 100%;
+        flex: unset;
+        margin-left: 0;
+        margin-top: var(--spacing-lg);
+        /* Espaçamento da parte superior em coluna */
+        text-align: center;
+        /* Centraliza o conteúdo (ex: botão) */
+    }
+
+    .select-container select {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+
+    /* Contêiner de botões em formulários em mobile */
+    .form-button-container {
+        margin-top: var(--spacing-lg);
+        margin-bottom: var(--spacing-md);
+        justify-content: stretch;
+        /* Estica os botões se eles ocuparem 100% */
+    }
+
+    .form-button-container button {
+        width: 100%;
+        /* Botões ocupam largura total */
+        margin: 0;
+        /* Zera margens internas */
+        padding: var(--button-padding-y-mobile) var(--button-padding-x-mobile);
+        /* Padding menor para mobile */
+    }
+
+    /* Inputs e selects em mobile */
+    input[type="text"],
+    input[type="number"],
+    input[type="email"],
+    .subject-select,
+    .select-student-assignment,
+    .subject-select-assignment {
+        width: calc(100% - (var(--input-padding-mobile) * 2) - (var(--border-width) * 2));
+        padding: var(--input-padding-mobile);
+        margin-bottom: 0;
+        height: auto;
+        /* Deixa altura automática para evitar cortes */
+    }
+
+    /* Botões em mobile (geral) */
+    button {
+        padding: var(--button-padding-y-mobile) var(--button-padding-x-mobile);
+        font-size: 0.9em;
+        margin: var(--spacing-xxs);
+        flex-grow: 1;
+        margin-bottom: 0;
+    }
+
+    /* Ajuste para botões de ação na lista em telas pequenas */
+    .list-buttons-container {
+        width: 100%;
+        margin-left: 0;
+        margin-top: var(--spacing-md);
+        justify-content: stretch;
+        gap: var(--spacing-xs);
+    }
+
+    .list-buttons-container button {
+        padding: var(--button-padding-y-mobile) var(--button-padding-x-mobile);
+        width: 100%;
+        margin: 0;
+    }
+
+    /* Itens de lista em mobile */
+    li {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: var(--spacing-md);
+    }
+
+    li strong {
+        margin-bottom: var(--spacing-xs);
+        margin-right: 0;
+    }
+
+    /* Elementos filhos de li que não são strong ou list-buttons-container */
+    li>*:not(strong):not(.list-buttons-container) {
+        width: 100%;
+        margin-left: 0;
+        margin-top: var(--spacing-xs);
+    }
+
+    li form div {
+        width: 100%;
+    }
+
+    /* Mobile: Gerenciamento de matérias (seções específicas) */
+    .subject-assignment-section {
+        padding: var(--spacing-md);
+    }
+
+    .subject-assignment-section h4 {
+        font-size: 1.2em;
+    }
+
+    .subject-add-form {
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+
+    .subject-add-form .select-container,
+    .subject-add-form .add-subject-button {
+        width: 100%;
+        margin: 0;
+    }
+
+    .assigned-subjects-list li {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-xxs);
+    }
+
+    .assigned-subjects-list li button.remove-subject-button {
+        width: 100%;
+        margin-top: var(--spacing-xs);
+        margin-left: 0;
+    }
+}
+
+/* Telas muito pequenas (smartphones em modo retrato) */
+@media (max-width: 30rem) {
+
+    /* 480px / 16 = 30rem */
+    #root {
+        padding: 1rem;
+    }
+
+    .App {
+        padding: var(--spacing-md);
+    }
+
+    h1 {
+        font-size: 1.5em;
+    }
+
+    h2 {
+        font-size: 1.3em;
+    }
+
+    button {
+        font-size: 0.85em;
+        padding: var(--button-padding-y-mobile-xs) var(--button-padding-x-mobile-xs);
+    }
+
+    li {
+        padding: var(--spacing-sm);
+    }
+}

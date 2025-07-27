@@ -293,8 +293,6 @@ function TeacherManagement() {
 
   return (
     <div className="teacher-management-page">
-      <h1>Gerenciamento de Professores</h1>
-
       {/* Formulário de Criação de Professor */}
       <h2>Adicionar Novo Professor</h2>
       <form onSubmit={handleCreateTeacher}>

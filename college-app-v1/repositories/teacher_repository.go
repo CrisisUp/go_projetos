@@ -1,13 +1,18 @@
+// repositories/teacher_repository.go
+
 package repositories
 
 import (
-	"college-app-v1/models"
+	"college-app-v1/models" // Certifique-se de que este caminho está correto
 	"database/sql"
+	"fmt"
 	"log"
-	// Certifique-se de que este import está presente se você gerar UUIDs aqui
+
+	// Adicionado para strings.ToLower
+	"github.com/google/uuid" // Adicionar este import se ainda não estiver
 )
 
-// TeacherRepository define as operações de CRUD para professores.
+// TeacherRepository define a interface para operações de persistência de professor.
 type TeacherRepository struct {
 	db *sql.DB
 }
@@ -18,98 +23,118 @@ func NewTeacherRepository(db *sql.DB) *TeacherRepository {
 }
 
 // CreateTeacher insere um novo professor no banco de dados.
-// O ID, Registry e Email já devem vir preenchidos do Service.
+// Assumimos que o ID é gerado aqui.
 func (r *TeacherRepository) CreateTeacher(teacher *models.Teacher) error {
-	// Incluindo 'email' na query de INSERT
-	query := `INSERT INTO teachers (id, registry, name, email, department) VALUES ($1, $2, $3, $4, $5)`
-	_, err := r.db.Exec(query, teacher.ID, teacher.Registry, teacher.Name, teacher.Email, teacher.Department)
+	teacher.ID = uuid.New().String() // Gera um ID único para o professor
+	query := `INSERT INTO teachers (id, name, department, email) VALUES ($1, $2, $3, $4) RETURNING id`
+	_, err := r.db.Exec(query, teacher.ID, teacher.Name, teacher.Department, teacher.Email)
 	if err != nil {
 		log.Printf("CreateTeacher: Erro ao executar INSERT para professor %s: %v", teacher.Name, err)
-		return err
+		return fmt.Errorf("falha ao criar professor no DB: %w", err)
 	}
-	log.Printf("CreateTeacher: Professor '%s' (ID: %s, Registro: %s) criado com sucesso.", teacher.Name, teacher.ID, teacher.Registry)
+	log.Printf("CreateTeacher: Professor '%s' (ID: %s, Dept: %s, Email: %s) criado com sucesso.", teacher.Name, teacher.ID, teacher.Department, teacher.Email)
 	return nil
 }
 
-// GetTeacherByID busca um professor pelo ID e carrega suas matérias.
+// GetTeacherByID busca um professor pelo ID, incluindo matérias associadas.
 func (r *TeacherRepository) GetTeacherByID(id string) (*models.Teacher, error) {
-	teacher := &models.Teacher{}
-	// Incluindo 'email' na query de SELECT
-	query := `SELECT id, registry, name, email, department FROM teachers WHERE id = $1`
-	err := r.db.QueryRow(query, id).Scan(&teacher.ID, &teacher.Registry, &teacher.Name, &teacher.Email, &teacher.Department)
+	var teacher models.Teacher
+	query := `SELECT id, name, department, email FROM teachers WHERE id = $1`
+	err := r.db.QueryRow(query, id).Scan(&teacher.ID, &teacher.Name, &teacher.Department, &teacher.Email)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			log.Printf("GetTeacherByID: Professor com ID %s não encontrado no DB.", id)
-			return nil, nil
+			return nil, fmt.Errorf("professor não encontrado")
 		}
-		log.Printf("GetTeacherByID: Erro ao escanear dados do professor com ID %s: %v", id, err)
-		return nil, err
+		log.Printf("GetTeacherByID: Erro ao buscar professor por ID %s: %v", id, err)
+		return nil, fmt.Errorf("falha ao buscar professor por ID: %w", err)
 	}
 
-	// Carregar matérias associadas ao professor
-	subjects, err := r.GetSubjectsByTeacherID(teacher.ID)
+	// Buscar matérias para este professor
+	subjects, err := r.GetSubjectsByTeacherID(teacher.ID) // Assumindo que você tem essa função
 	if err != nil {
 		log.Printf("GetTeacherByID: Erro ao buscar matérias para o professor %s (ID: %s): %v", teacher.Name, teacher.ID, err)
-		return nil, err
+		return nil, fmt.Errorf("falha ao buscar matérias associadas: %w", err)
 	}
-	if subjects == nil {
-		teacher.Subjects = []models.Subject{} // Inicializa como slice vazio se não houver matérias
-	} else {
-		teacher.Subjects = subjects
-	}
-
+	teacher.Subjects = subjects // Atribui as matérias
 	log.Printf("GetTeacherByID: Professor '%s' (ID: %s) encontrado com sucesso, %d matérias.", teacher.Name, teacher.ID, len(teacher.Subjects))
-	return teacher, nil
+	return &teacher, nil
 }
 
-// GetAllTeachers busca todos os professores e carrega suas matérias.
-func (r *TeacherRepository) GetAllTeachers() ([]models.Teacher, error) {
-	// Incluindo 'email' na query de SELECT
-	rows, err := r.db.Query(`SELECT id, registry, name, email, department FROM teachers`)
+// GetAllTeachers busca todos os professores com filtros.
+// nameFilter, departmentFilter, emailFilter: strings vazias significam sem filtro.
+func (r *TeacherRepository) GetAllTeachers(nameFilter, departmentFilter, emailFilter string) ([]models.Teacher, error) {
+	baseQuery := `SELECT id, name, department, email FROM teachers WHERE 1=1`
+	args := []interface{}{}
+	argCounter := 1
+
+	if nameFilter != "" {
+		baseQuery += fmt.Sprintf(" AND LOWER(name) LIKE LOWER($%d)", argCounter)
+		args = append(args, "%"+nameFilter+"%") // % para LIKE
+		argCounter++
+	}
+	if departmentFilter != "" {
+		baseQuery += fmt.Sprintf(" AND LOWER(department) LIKE LOWER($%d)", argCounter)
+		args = append(args, "%"+departmentFilter+"%")
+		argCounter++
+	}
+	if emailFilter != "" {
+		baseQuery += fmt.Sprintf(" AND LOWER(email) LIKE LOWER($%d)", argCounter)
+		args = append(args, "%"+emailFilter+"%")
+		argCounter++
+	}
+
+	// --- ADICIONE ESTES LOGS TEMPORÁRIOS PARA DEPURAR (REMOVER EM PRODUÇÃO) ---
+	log.Printf("GetAllTeachers Repository: Query SQL final: '%s'", baseQuery)
+	log.Printf("GetAllTeachers Repository: Argumentos SQL: %v", args)
+	// --- FIM DOS LOGS TEMPORÁRIOS ---
+
+	rows, err := r.db.Query(baseQuery, args...)
 	if err != nil {
-		log.Printf("GetAllTeachers: Erro ao executar SELECT ALL FROM teachers: %v", err)
-		return nil, err
+		log.Printf("GetAllTeachers: Erro ao executar query com filtros: %v", err)
+		return nil, fmt.Errorf("falha ao buscar professores com filtros: %w", err)
 	}
 	defer rows.Close()
 
 	var teachers []models.Teacher
 	for rows.Next() {
-		teacher := models.Teacher{}
-		// Incluindo 'email' no Scan
-		if err := rows.Scan(&teacher.ID, &teacher.Registry, &teacher.Name, &teacher.Email, &teacher.Department); err != nil {
-			log.Printf("GetAllTeachers: Erro ao escanear linha de professor do DB: %v", err)
-			return nil, err
+		var t models.Teacher
+		if err := rows.Scan(&t.ID, &t.Name, &t.Department, &t.Email); err != nil {
+			log.Printf("GetAllTeachers: Erro ao escanear professor: %v", err)
+			return nil, fmt.Errorf("falha ao escanear dados do professor: %w", err)
 		}
-		// Carregar matérias associadas a cada professor
-		subjects, err := r.GetSubjectsByTeacherID(teacher.ID)
+		// Buscar matérias para cada professor (abordagem N+1 - pode ser otimizada com JOINs)
+		subjects, err := r.GetSubjectsByTeacherID(t.ID) // Assumindo que você tem essa função
 		if err != nil {
-			log.Printf("GetAllTeachers: Erro ao buscar matérias para professor %s (ID: %s) durante iteração: %v", teacher.Name, teacher.ID, err)
-			return nil, err
+			log.Printf("GetAllTeachers: Erro ao buscar matérias para professor %s (ID: %s) durante iteração: %v", t.Name, t.ID, err)
+			return nil, fmt.Errorf("falha ao buscar matérias associadas ao professor %s: %w", t.ID, err)
 		}
-		if subjects == nil {
-			teacher.Subjects = []models.Subject{}
-		} else {
-			teacher.Subjects = subjects
-		}
-		teachers = append(teachers, teacher)
+		t.Subjects = subjects
+		teachers = append(teachers, t)
 	}
-	log.Printf("GetAllTeachers: %d professores encontrados e processados.", len(teachers))
+
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("erro durante iteração de professores: %w", err)
+	}
+	log.Printf("GetAllTeachers: %d professores encontrados e processados com filtros (Nome: '%s', Dept: '%s', Email: '%s').", len(teachers), nameFilter, departmentFilter, emailFilter)
 	return teachers, nil
 }
 
 // UpdateTeacher atualiza um professor existente.
 func (r *TeacherRepository) UpdateTeacher(teacher *models.Teacher) error {
-	// Incluindo 'email' na query de UPDATE
-	query := `UPDATE teachers SET registry = $1, name = $2, email = $3, department = $4 WHERE id = $5`
-	result, err := r.db.Exec(query, teacher.Registry, teacher.Name, teacher.Email, teacher.Department, teacher.ID)
+	query := `UPDATE teachers SET name = $1, department = $2, email = $3 WHERE id = $4`
+	res, err := r.db.Exec(query, teacher.Name, teacher.Department, teacher.Email, teacher.ID)
 	if err != nil {
-		log.Printf("UpdateTeacher: Erro ao atualizar professor: %v", err)
-		return err
+		log.Printf("UpdateTeacher: Erro ao atualizar professor %s (ID: %s): %v", teacher.Name, teacher.ID, err)
+		return fmt.Errorf("falha ao atualizar professor: %w", err)
 	}
-	rowsAffected, _ := result.RowsAffected()
+	rowsAffected, err := res.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("falha ao verificar linhas afetadas após atualização: %w", err)
+	}
 	if rowsAffected == 0 {
 		log.Printf("UpdateTeacher: Nenhum professor encontrado para atualizar com ID %s.", teacher.ID)
-		return sql.ErrNoRows
+		return fmt.Errorf("professor não encontrado para atualização")
 	}
 	log.Printf("UpdateTeacher: Professor '%s' (ID: %s) atualizado com sucesso.", teacher.Name, teacher.ID)
 	return nil
@@ -118,54 +143,30 @@ func (r *TeacherRepository) UpdateTeacher(teacher *models.Teacher) error {
 // DeleteTeacher deleta um professor pelo ID.
 func (r *TeacherRepository) DeleteTeacher(id string) error {
 	query := `DELETE FROM teachers WHERE id = $1`
-	result, err := r.db.Exec(query, id)
+	res, err := r.db.Exec(query, id)
 	if err != nil {
-		log.Printf("DeleteTeacher: Erro ao deletar professor: %v", err)
-		return err
+		log.Printf("DeleteTeacher: Erro ao deletar professor ID %s: %v", id, err)
+		return fmt.Errorf("falha ao deletar professor: %w", err)
 	}
-	rowsAffected, _ := result.RowsAffected()
+	rowsAffected, err := res.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("falha ao verificar linhas afetadas após exclusão: %w", err)
+	}
 	if rowsAffected == 0 {
 		log.Printf("DeleteTeacher: Nenhum professor encontrado para deletar com ID %s.", id)
-		return sql.ErrNoRows
+		return fmt.Errorf("professor não encontrado para exclusão")
 	}
 	log.Printf("DeleteTeacher: Professor com ID %s deletado com sucesso.", id)
 	return nil
 }
 
-// GetLastRegistryForDepartment busca o maior número de registro para o departamento especificado.
-// Retorna o registro como string e um erro, se houver.
-// Retorna "" e nil se não houver registros para o departamento.
-func (r *TeacherRepository) GetLastRegistryForDepartment(departmentCode string) (string, error) {
-	var lastRegistry sql.NullString
-	query := `
-		SELECT registry FROM teachers
-		WHERE registry LIKE $1 || '-%'
-		ORDER BY registry DESC
-		LIMIT 1
-	`
-	err := r.db.QueryRow(query, departmentCode).Scan(&lastRegistry)
-
-	if err != nil {
-		if err == sql.ErrNoRows {
-			return "", nil // Nenhum registro encontrado para este departamento
-		}
-		log.Printf("GetLastRegistryForDepartment: Erro ao buscar último registro para o departamento %s: %v", departmentCode, err)
-		return "", err
-	}
-
-	if lastRegistry.Valid {
-		return lastRegistry.String, nil
-	}
-	return "", nil
-}
-
-// AddSubjectToTeacher associa uma matéria a um professor.
+// AddSubjectToTeacher associa uma matéria a um professor (tabela teacher_subjects).
 func (r *TeacherRepository) AddSubjectToTeacher(teacherID, subjectID string) error {
 	query := `INSERT INTO teacher_subjects (teacher_id, subject_id) VALUES ($1, $2) ON CONFLICT (teacher_id, subject_id) DO NOTHING`
 	_, err := r.db.Exec(query, teacherID, subjectID)
 	if err != nil {
 		log.Printf("AddSubjectToTeacher: Erro ao executar INSERT para associação professor %s - matéria %s: %v", teacherID, subjectID, err)
-		return err
+		return fmt.Errorf("falha ao associar matéria ao professor: %w", err)
 	}
 	log.Printf("AddSubjectToTeacher: Associação professor %s - matéria %s criada/existente.", teacherID, subjectID)
 	return nil
@@ -174,15 +175,18 @@ func (r *TeacherRepository) AddSubjectToTeacher(teacherID, subjectID string) err
 // RemoveSubjectFromTeacher desassocia uma matéria de um professor.
 func (r *TeacherRepository) RemoveSubjectFromTeacher(teacherID, subjectID string) error {
 	query := `DELETE FROM teacher_subjects WHERE teacher_id = $1 AND subject_id = $2`
-	result, err := r.db.Exec(query, teacherID, subjectID)
+	res, err := r.db.Exec(query, teacherID, subjectID)
 	if err != nil {
 		log.Printf("RemoveSubjectFromTeacher: Erro ao executar DELETE para associação professor %s - matéria %s: %v", teacherID, subjectID, err)
-		return err
+		return fmt.Errorf("falha ao desassociar matéria do professor: %w", err)
 	}
-	rowsAffected, _ := result.RowsAffected()
+	rowsAffected, err := res.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("falha ao verificar linhas afetadas após desassociação: %w", err)
+	}
 	if rowsAffected == 0 {
 		log.Printf("RemoveSubjectFromTeacher: Associação professor %s - matéria %s não encontrada para deletar.", teacherID, subjectID)
-		return sql.ErrNoRows
+		return fmt.Errorf("associação não encontrada para desassociação")
 	}
 	log.Printf("RemoveSubjectFromTeacher: Associação professor %s - matéria %s deletada com sucesso.", teacherID, subjectID)
 	return nil
@@ -198,7 +202,7 @@ func (r *TeacherRepository) GetSubjectsByTeacherID(teacherID string) ([]models.S
 	rows, err := r.db.Query(query, teacherID)
 	if err != nil {
 		log.Printf("GetSubjectsByTeacherID: Erro ao executar query para professor ID %s: %v", teacherID, err)
-		return nil, err
+		return nil, fmt.Errorf("falha ao buscar matérias por professor: %w", err)
 	}
 	defer rows.Close()
 
@@ -207,10 +211,14 @@ func (r *TeacherRepository) GetSubjectsByTeacherID(teacherID string) ([]models.S
 		subject := models.Subject{}
 		if err := rows.Scan(&subject.ID, &subject.Name, &subject.Year, &subject.Credits); err != nil {
 			log.Printf("GetSubjectsByTeacherID: Erro ao escanear matéria do professor ID %s: %v", teacherID, err)
-			return nil, err
+			return nil, fmt.Errorf("falha ao escanear matéria: %w", err)
 		}
 		subjects = append(subjects, subject)
 	}
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("erro durante iteração de matérias: %w", err)
+	}
+
 	if subjects == nil {
 		log.Printf("GetSubjectsByTeacherID: Nenhuma matéria encontrada para professor ID %s (retornando slice vazio).", teacherID)
 		return []models.Subject{}, nil

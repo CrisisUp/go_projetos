@@ -1,0 +1,62 @@
+/* src/styles/_base.css */
+
+/* --- RESET BÁSICO PARA BOX-SIZING --- */
+html {
+    box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+
+/* --- FIM DO RESET --- */
+
+/* Importação da fonte Roboto */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+/* Estilos globais para o corpo do documento e títulos */
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    color: var(--text-dark);
+    background-color: var(--bg-primary);
+    line-height: 1.5;
+    /* Boa prática para legibilidade */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    color: var(--header-color);
+    margin-bottom: var(--header-margin-bottom);
+    margin-top: 0;
+    /* Zera margem superior para controle via container */
+}
+
+p {
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    font-style: italic;
+    /* Mantido como estilo específico para p */
+    color: var(--text-placeholder);
+}
+
+hr {
+    border: 0;
+    height: var(--hr-height);
+    background-color: var(--border-color-light);
+    margin: var(--spacing-xxxl) auto;
+    /* auto para centralizar */
+    width: 100%;
+    /* Garantir que o hr ocupe a largura total */
+}
+
+/* Estilos de elementos HTML base como ul */
+ul {
+    list-style: none;
+    padding: 0;
+}

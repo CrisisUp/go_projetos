@@ -1,0 +1,192 @@
+/* src/styles/_buttons.css */
+
+/* Estilos globais para todos os botões */
+button {
+    padding: var(--button-padding-y) var(--button-padding-x);
+    margin: var(--button-margin);
+    /* Margem padrão para botões */
+    border: none;
+    border-radius: var(--border-radius-md);
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+    font-size: var(--button-font-size);
+    display: flex;
+    /* Para alinhar ícone e texto */
+    align-items: center;
+    /* Centraliza verticalmente ícone e texto */
+    justify-content: center;
+    /* Centraliza horizontalmente ícone e texto */
+    margin-bottom: 0;
+    /* Zera margem inferior, o div pai já tem a margem */
+    box-sizing: border-box;
+    /* Garante que padding e border estejam incluídos na altura */
+    height: var(--input-height);
+    /* Tenta igualar a altura dos inputs */
+}
+
+/* Estilo para ícones dentro de botões (para espaçamento) */
+button .svg-inline--fa {
+    margin-right: var(--icon-text-spacing);
+}
+
+/* Para botões que têm APENAS um ícone (ex: botões de lista, Salvar/Cancelar edição) */
+.list-buttons-container button .svg-inline--fa,
+.form-button-container button .svg-inline--fa,
+.subject-add-form .add-subject-button .svg-inline--fa,
+/* Botão "Adicionar" na atribuição de matéria */
+.assigned-subjects-list .remove-subject-button .svg-inline--fa,
+/* Botão "Remover" na lista de atribuídas */
+button.add-subject-to-student-button .svg-inline--fa {
+    /* Botão "Atribuir" principal */
+    margin-right: 0;
+    /* Remove a margem para ícones sozinhos */
+}
+
+
+/* --- Estilos de Cores e Tipos de Botões --- */
+
+/* Botões de Navegação (Alunos/Professores) */
+.nav-button {
+    background-color: var(--button-neutral);
+    color: var(--text-light);
+}
+
+.nav-button:hover {
+    background-color: var(--button-neutral-hover);
+}
+
+.nav-button.active {
+    /* Botão de navegação ativo */
+    background-color: var(--button-primary);
+    box-shadow: var(--shadow-subtle);
+}
+
+.nav-button.active:hover {
+    background-color: var(--button-primary-hover);
+}
+
+/* Botão de Criação (Criar Aluno/Criar Professor) */
+button.create-button {
+    background-color: var(--button-success);
+    color: var(--text-light);
+}
+
+button.create-button:hover {
+    background-color: var(--button-success-hover);
+    transform: translateY(-var(--border-width));
+}
+
+/* Botão Editar (Editar Aluno/Professor) */
+button.edit-button {
+    background-color: var(--button-primary);
+    color: var(--text-light);
+}
+
+button.edit-button:hover {
+    background-color: var(--button-primary-hover);
+    transform: translateY(-var(--border-width));
+}
+
+/* Botão Detalhes */
+button.details-button {
+    background-color: var(--button-neutral);
+    color: var(--text-light);
+}
+
+button.details-button:hover {
+    background-color: var(--button-neutral-hover);
+    transform: translateY(-var(--border-width));
+}
+
+/* Botão Excluir */
+button.delete-button {
+    background-color: var(--button-danger);
+    color: var(--text-light);
+}
+
+button.delete-button:hover {
+    background-color: var(--button-danger-hover);
+    transform: translateY(-var(--border-width));
+}
+
+/* Botão Cancelar */
+button.cancel-button {
+    background-color: var(--button-warning);
+    color: var(--text-dark);
+}
+
+button.cancel-button:hover {
+    background-color: var(--button-warning-hover);
+    transform: translateY(-var(--border-width));
+}
+
+/* Botões de Filtro e Atribuição Principal */
+button.filter-button,
+button.add-subject-to-student-button {
+    background-color: var(--button-primary);
+    color: var(--text-light);
+    /* padding já vem do botão geral, mas pode ser ajustado para um visual mais "cheio" */
+    padding: var(--button-padding-y) var(--button-padding-x);
+}
+
+button.filter-button:hover,
+button.add-subject-to-student-button:hover {
+    background-color: var(--button-primary-hover);
+    transform: translateY(-var(--border-width));
+}
+
+/* Botões Remover Matéria (em listas de atribuição) */
+button.remove-subject-button {
+    background-color: var(--button-danger);
+    color: var(--text-light);
+    padding: var(--spacing-xxs) var(--spacing-sm);
+    /* Padding bem pequeno */
+    font-size: 0.8em;
+    width: auto;
+    /* Deixa a largura automática para se ajustar ao ícone */
+    min-width: unset;
+    /* Remove min-width */
+    margin-left: auto;
+    /* Empurra para a direita em flexbox */
+    flex-shrink: 0;
+    /* Não encolhe */
+    height: auto;
+    /* Altura automática para botões pequenos */
+}
+
+button.remove-subject-button:hover {
+    background-color: var(--button-danger-hover);
+    transform: translateY(-1px);
+}
+
+/* Container para botões em linha nos formulários */
+.form-button-container {
+    display: flex;
+    gap: var(--list-button-gap);
+    /* Gap entre botões Salvar/Cancelar */
+    flex-wrap: wrap;
+    margin-left: auto;
+    /* Empurra para a direita */
+    margin-bottom: 0;
+    /* Zera margem inferior */
+}
+
+.form-button-container button {
+    margin: 0;
+    /* Remove margem padrão, o gap controla */
+    flex: 0 0 auto;
+    width: auto;
+    min-width: 3.5rem;
+    /* Largura mínima para botões de ícone */
+    padding: var(--button-padding-y) var(--list-button-padding-x);
+    /* Padding compacto */
+}
+
+/* Botão "Adicionar" na seção de atribuição de matéria */
+.subject-add-form .add-subject-button {
+    flex: 0 0 auto;
+    width: auto;
+    padding: var(--button-padding-y) var(--list-button-padding-x);
+    /* Padding menor como botões de lista */
+}

@@ -1,0 +1,31 @@
+/* src/styles/_lists.css */
+
+/* Estilos para listas de itens (alunos e professores) */
+li {
+    background-color: var(--bg-primary);
+    border: var(--border-width) solid var(--border-color-light);
+    border-radius: var(--border-radius-sm);
+    margin-bottom: var(--list-item-margin-bottom);
+    padding: var(--list-item-padding);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: var(--shadow-subtle);
+    gap: var(--list-item-content-gap);
+    /* Espaçamento entre texto do item e botões */
+}
+
+li strong {
+    color: var(--header-color);
+}
+
+/* Container para botões dentro de itens de lista */
+.list-buttons-container {
+    display: flex;
+    gap: var(--list-button-gap);
+    /* Espaçamento entre botões da lista */
+    flex-wrap: wrap;
+    margin-left: auto;
+    /* Empurra os botões para a direita */
+}

@@ -1,44 +1,49 @@
+// handlers/teacher_handler.go
+
 package handlers
 
 import (
+	"college-app-v1/models"   // Certifique-se de que este caminho está correto
+	"college-app-v1/services" // Certifique-se de que este caminho está correto
 	"encoding/json"
 	"log"
 	"net/http"
-	"strings" // Para verificar erros específicos
 
-	"college-app-v1/models"   // Importa o modelo de professor
-	"college-app-v1/services" // Importa o serviço de professor
+	// "strconv" // Não é necessário aqui, pois os filtros são strings (ou ponteiro para int se fosse numérico)
 
 	"github.com/gorilla/mux"
 )
 
-// TeacherHandler gerencia requisições HTTP para professores.
+// SubjectHandler gerencia as requisições HTTP para matérias. (Mantenha o SubjectHandler se ele existir)
+// ... (seu código SubjectHandler) ...
+
+// StudentHandler gerencia as requisições HTTP para alunos. (Mantenha o StudentHandler se ele existir)
+// ... (seu código StudentHandler) ...
+
+// TeacherHandler gerencia as requisições HTTP para professores.
 type TeacherHandler struct {
-	teacherService *services.TeacherService // Renomeei 'service' para 'teacherService' para clareza
+	service *services.TeacherService // Ponteiro para o serviço de professor
 }
 
 // NewTeacherHandler cria uma nova instância de TeacherHandler.
-func NewTeacherHandler(service *services.TeacherService) *TeacherHandler {
-	return &TeacherHandler{teacherService: service}
+func NewTeacherHandler(s *services.TeacherService) *TeacherHandler {
+	return &TeacherHandler{service: s}
 }
 
-// CreateTeacherHandler cria um novo professor via HTTP POST.
-// Rota: /teachers (POST)
+// CreateTeacherHandler lida com a criação de um novo professor.
+// POST /teachers
 func (h *TeacherHandler) CreateTeacherHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	var teacher models.Teacher
+
+	var teacher models.Teacher // Assumimos que o modelo Teacher tem Name, Department, Email
 	if err := json.NewDecoder(r.Body).Decode(&teacher); err != nil {
-		http.Error(w, "Requisição inválida: "+err.Error(), http.StatusBadRequest)
+		http.Error(w, `{"message": "Requisição inválida: corpo JSON malformado."}`, http.StatusBadRequest)
 		return
 	}
 
-	if err := h.teacherService.CreateTeacher(&teacher); err != nil {
-		if strings.Contains(err.Error(), "obrigatórios") || strings.Contains(err.Error(), "já existe") {
-			http.Error(w, err.Error(), http.StatusBadRequest)
-			return
-		}
-		log.Printf("Erro interno ao criar professor: %v", err)
-		http.Error(w, "Erro interno do servidor ao criar professor", http.StatusInternalServerError)
+	if err := h.service.CreateTeacher(&teacher); err != nil {
+		log.Printf("CreateTeacherHandler: Erro ao criar professor no serviço: %v", err)
+		http.Error(w, `{"message": "Erro ao criar professor: `+err.Error()+`"}`, http.StatusInternalServerError)
 		return
 	}
 
@@ -46,111 +51,126 @@ func (h *TeacherHandler) CreateTeacherHandler(w http.ResponseWriter, r *http.Req
 	json.NewEncoder(w).Encode(teacher)
 }
 
-// GetTeacherByIDHandler busca um professor pelo ID via HTTP GET.
-// Rota: /teachers/{id} (GET)
+// GetTeacherByIDHandler lida com a busca de um professor por ID.
+// GET /teachers/{id}
 func (h *TeacherHandler) GetTeacherByIDHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	params := mux.Vars(r)
-	id := params["id"]
 
-	teacher, err := h.teacherService.GetTeacherByID(id)
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	teacher, err := h.service.GetTeacherByID(id)
 	if err != nil {
-		if strings.Contains(err.Error(), "não encontrado") {
-			http.Error(w, err.Error(), http.StatusNotFound)
+		if err.Error() == "professor não encontrado" { // Mensagem de erro específica do serviço
+			http.Error(w, `{"message": "Professor não encontrado."}`, http.StatusNotFound)
 			return
 		}
-		log.Printf("Erro interno ao buscar professor por ID %s: %v", id, err)
-		http.Error(w, "Erro interno do servidor ao buscar professor", http.StatusInternalServerError)
+		log.Printf("GetTeacherByIDHandler: Erro ao buscar professor no serviço: %v", err)
+		http.Error(w, `{"message": "Erro ao buscar professor: `+err.Error()+`"}`, http.StatusInternalServerError)
 		return
 	}
 
 	json.NewEncoder(w).Encode(teacher)
 }
 
-// GetAllTeachersHandler busca todos os professores via HTTP GET.
-// Rota: /teachers (GET)
+// GetAllTeachersHandler lida com a busca de todos os professores, com filtros opcionais.
+// GET /teachers?name=X&department=Y&email=Z
 func (h *TeacherHandler) GetAllTeachersHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	teachers, err := h.teacherService.GetAllTeachers()
+	// Extrair parâmetros de consulta (query parameters)
+	query := r.URL.Query()
+	nameFilter := query.Get("name")
+	departmentFilter := query.Get("department")
+	emailFilter := query.Get("email")
+
+	// --- ADICIONE ESTES LOGS TEMPORÁRIOS PARA DEPURAR (REMOVER EM PRODUÇÃO) ---
+	log.Printf("GetAllTeachersHandler: Requisição recebida. URL: %s", r.URL.String())
+	log.Printf("GetAllTeachersHandler: Filtro Nome: '%s', Departamento: '%s', Email: '%s'", nameFilter, departmentFilter, emailFilter)
+	// --- FIM DOS LOGS TEMPORÁRIOS ---
+
+	// Chamar o serviço com os filtros
+	teachers, err := h.service.GetAllTeachers(nameFilter, departmentFilter, emailFilter) // <-- NOVA ASSINATURA
 	if err != nil {
-		log.Printf("Erro interno ao buscar todos os professores: %v", err)
-		http.Error(w, "Erro interno do servidor ao buscar professores", http.StatusInternalServerError)
+		log.Printf("GetAllTeachersHandler: Erro ao buscar professores no serviço: %v", err)
+		http.Error(w, `{"message": "Erro ao buscar professores: `+err.Error()+`"}`, http.StatusInternalServerError)
 		return
 	}
 
 	json.NewEncoder(w).Encode(teachers)
 }
 
-// UpdateTeacherHandler atualiza um professor existente via HTTP PUT.
-// Rota: /teachers/{id} (PUT)
+// UpdateTeacherHandler lida com a atualização de um professor existente.
+// PUT /teachers/{id}
 func (h *TeacherHandler) UpdateTeacherHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	params := mux.Vars(r)
-	id := params["id"]
+
+	vars := mux.Vars(r)
+	id := vars["id"]
 
 	var teacher models.Teacher
 	if err := json.NewDecoder(r.Body).Decode(&teacher); err != nil {
-		http.Error(w, "Requisição inválida: "+err.Error(), http.StatusBadRequest)
+		http.Error(w, `{"message": "Requisição inválida: corpo JSON malformado."}`, http.StatusBadRequest)
 		return
 	}
-	teacher.ID = id // Garante que o ID da URL seja usado para atualização
 
-	if err := h.teacherService.UpdateTeacher(&teacher); err != nil {
-		if strings.Contains(err.Error(), "obrigatório") || strings.Contains(err.Error(), "não encontrado") {
-			http.Error(w, err.Error(), http.StatusNotFound) // Use 404 para não encontrado
+	teacher.ID = id // Garante que o ID da URL seja usado
+	if err := h.service.UpdateTeacher(&teacher); err != nil {
+		if err.Error() == "professor não encontrado para atualização" {
+			http.Error(w, `{"message": "`+err.Error()+`"}`, http.StatusNotFound)
 			return
 		}
-		log.Printf("Erro interno ao atualizar professor %s: %v", id, err)
-		http.Error(w, "Erro interno do servidor ao atualizar professor", http.StatusInternalServerError)
+		log.Printf("UpdateTeacherHandler: Erro ao atualizar professor no serviço: %v", err)
+		http.Error(w, `{"message": "Erro ao atualizar professor: `+err.Error()+`"}`, http.StatusInternalServerError)
 		return
 	}
 
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(teacher) // Retorna o professor atualizado
+	json.NewEncoder(w).Encode(teacher)
 }
 
-// DeleteTeacherHandler deleta um professor pelo ID via HTTP DELETE.
-// Rota: /teachers/{id} (DELETE)
+// DeleteTeacherHandler lida com a exclusão de um professor por ID.
+// DELETE /teachers/{id}
 func (h *TeacherHandler) DeleteTeacherHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	params := mux.Vars(r)
-	id := params["id"]
 
-	if err := h.teacherService.DeleteTeacher(id); err != nil {
-		if strings.Contains(err.Error(), "não encontrado") {
-			http.Error(w, err.Error(), http.StatusNotFound)
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	if err := h.service.DeleteTeacher(id); err != nil {
+		if err.Error() == "professor não encontrado para exclusão" {
+			http.Error(w, `{"message": "`+err.Error()+`"}`, http.StatusNotFound)
 			return
 		}
-		log.Printf("Erro interno ao deletar professor %s: %v", id, err)
-		http.Error(w, "Erro interno do servidor ao deletar professor", http.StatusInternalServerError)
+		log.Printf("DeleteTeacherHandler: Erro ao deletar professor no serviço: %v", err)
+		http.Error(w, `{"message": "Erro ao deletar professor: `+err.Error()+`"}`, http.StatusInternalServerError)
 		return
 	}
 
-	w.WriteHeader(http.StatusNoContent) // 204 No Content para deleção bem-sucedida
+	w.WriteHeader(http.StatusNoContent)
 }
 
-// AddSubjectToTeacherHandler associa uma matéria a um professor via HTTP POST.
-// Rota: /teachers/{teacherID}/subjects/{subjectID} (POST)
+// AddSubjectToTeacherHandler lida com a adição de uma matéria a um professor.
+// POST /teachers/{teacherID}/subjects/{subjectID}
 func (h *TeacherHandler) AddSubjectToTeacherHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	params := mux.Vars(r)
-	teacherID := params["teacherID"]
-	subjectID := params["subjectID"]
 
-	if teacherID == "" || subjectID == "" {
-		http.Error(w, "IDs de professor e matéria são obrigatórios", http.StatusBadRequest)
-		return
-	}
+	vars := mux.Vars(r)
+	teacherID := vars["teacherID"]
+	subjectID := vars["subjectID"]
 
-	err := h.teacherService.AddSubjectToTeacherService(teacherID, subjectID)
-	if err != nil {
-		if strings.Contains(err.Error(), "não encontrado") {
-			http.Error(w, err.Error(), http.StatusNotFound)
+	if err := h.service.AddSubjectToTeacher(teacherID, subjectID); err != nil {
+		errorMessage := err.Error()
+		if errorMessage == "professor não encontrado para associação" || errorMessage == "matéria não encontrada para associação" {
+			http.Error(w, `{"message": "`+errorMessage+`"}`, http.StatusNotFound)
 			return
 		}
-		log.Printf("Erro ao adicionar matéria ao professor: %v", err)
-		http.Error(w, "Erro interno do servidor ao adicionar matéria ao professor", http.StatusInternalServerError)
+		if errorMessage == "matéria já associada a este professor" {
+			http.Error(w, `{"message": "`+errorMessage+`"}`, http.StatusConflict)
+			return
+		}
+		log.Printf("AddSubjectToTeacherHandler: Erro ao adicionar matéria ao professor no serviço: %v", err)
+		http.Error(w, `{"message": "Erro ao adicionar matéria ao professor: `+errorMessage+`"}`, http.StatusInternalServerError)
 		return
 	}
 
@@ -158,30 +178,25 @@ func (h *TeacherHandler) AddSubjectToTeacherHandler(w http.ResponseWriter, r *ht
 	json.NewEncoder(w).Encode(map[string]string{"message": "Matéria adicionada ao professor com sucesso."})
 }
 
-// RemoveSubjectFromTeacherHandler desassocia uma matéria de um professor via HTTP DELETE.
-// Rota: /teachers/{teacherID}/subjects/{subjectID} (DELETE)
+// RemoveSubjectFromTeacherHandler lida com a remoção de uma matéria de um professor.
+// DELETE /teachers/{teacherID}/subjects/{subjectID}
 func (h *TeacherHandler) RemoveSubjectFromTeacherHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	params := mux.Vars(r)
-	teacherID := params["teacherID"]
-	subjectID := params["subjectID"]
 
-	if teacherID == "" || subjectID == "" {
-		http.Error(w, "IDs de professor e matéria são obrigatórios", http.StatusBadRequest)
-		return
-	}
+	vars := mux.Vars(r)
+	teacherID := vars["teacherID"]
+	subjectID := vars["subjectID"]
 
-	err := h.teacherService.RemoveSubjectFromTeacherService(teacherID, subjectID)
-	if err != nil {
-		if strings.Contains(err.Error(), "não encontrado") {
-			http.Error(w, err.Error(), http.StatusNotFound)
+	if err := h.service.RemoveSubjectFromTeacher(teacherID, subjectID); err != nil {
+		errorMessage := err.Error()
+		if errorMessage == "professor não encontrado para desassociação" || errorMessage == "associação entre professor "+teacherID+" e matéria "+subjectID+" não encontrada para desassociação" {
+			http.Error(w, `{"message": "`+errorMessage+`"}`, http.StatusNotFound)
 			return
 		}
-		log.Printf("Erro ao remover matéria do professor: %v", err)
-		http.Error(w, "Erro interno do servidor ao remover matéria do professor", http.StatusInternalServerError)
+		log.Printf("RemoveSubjectFromTeacherHandler: Erro ao remover matéria do professor no serviço: %v", err)
+		http.Error(w, `{"message": "Erro ao remover matéria do professor: `+errorMessage+`"}`, http.StatusInternalServerError)
 		return
 	}
 
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]string{"message": "Matéria removida do professor com sucesso."})
+	w.WriteHeader(http.StatusNoContent)
 }

@@ -1,0 +1,56 @@
+/* src/styles/_layout.css */
+
+/* Estilos gerais para a estrutura da aplicação */
+#root {
+    max-width: 80rem;
+    margin: 0 auto;
+    /* Centraliza o contêiner principal */
+    padding: 2rem;
+    text-align: center;
+    /* Centraliza o conteúdo (incluindo o header principal) */
+}
+
+.App {
+    background-color: var(--bg-primary);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-subtle);
+    padding: var(--spacing-xl);
+    margin-bottom: var(--spacing-xxl);
+    width: 100%;
+    /* Garante que o App ocupe a largura total disponível */
+}
+
+/* Estilos de navegação principal */
+.main-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Centraliza os itens do cabeçalho */
+    margin-bottom: var(--spacing-xxl);
+}
+
+.main-header h1 {
+    font-size: 2.5em;
+    margin-bottom: var(--spacing-lg);
+}
+
+.navigation-buttons {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-md);
+    flex-wrap: wrap;
+    /* Permite que os botões quebrem em telas menores */
+    justify-content: center;
+    /* Centraliza os botões quando quebram */
+}
+
+/* Seções principais (alunos e professores) */
+.students-section,
+.teachers-section {
+    width: 100%;
+    padding-top: var(--spacing-lg);
+    text-align: left;
+    /* Alinha o conteúdo interno dessas seções à esquerda */
+    overflow-x: hidden;
+    /* Oculta overflow horizontal para evitar barras de rolagem */
+}

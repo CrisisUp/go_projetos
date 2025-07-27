@@ -1,0 +1,99 @@
+/* src/styles/_sections.css */
+
+/* Estilos para seções específicas da aplicação */
+
+/* Seção de Gerenciamento de Matérias (dentro de Alunos e Professores) */
+.subject-assignment-section {
+    background-color: var(--bg-primary);
+    border: var(--border-width) solid var(--border-color-light);
+    border-radius: var(--border-radius-sm);
+    padding: var(--spacing-lg);
+    margin-top: var(--spacing-xl);
+    /* Espaçamento da seção anterior */
+    text-align: left;
+}
+
+.subject-assignment-section h4 {
+    color: var(--header-color);
+    margin-bottom: var(--spacing-lg);
+}
+
+.subject-add-form {
+    display: flex;
+    gap: var(--spacing-md);
+    /* Espaçamento entre select e botão */
+    align-items: center;
+    margin-bottom: var(--spacing-xl);
+    flex-wrap: wrap;
+}
+
+/* Novo: Estilos para o container de selects (Aluno e Matéria) */
+.select-container {
+    flex: 1;
+    /* Permite que o container do select ocupe o espaço disponível */
+    min-width: 10rem;
+    /* Largura mínima para o select */
+    margin-bottom: 0;
+    /* Zera margem inferior */
+}
+
+/* NOVO: Estilos para a lista de matérias atribuídas em um aluno/professor específico */
+.assigned-subjects-view {
+    margin-top: var(--spacing-lg);
+    /* Espaço acima da lista de atribuídas */
+}
+
+.assigned-subjects-view h3 {
+    /* Título "Matérias de..." */
+    margin-top: 0;
+    /* Zera margem superior, já tem margin-top do container */
+    margin-bottom: var(--spacing-md);
+    color: var(--header-color);
+    font-size: 1.1em;
+}
+
+.assigned-subjects-list {
+    list-style: none;
+    padding: 0;
+}
+
+.assigned-subjects-list li {
+    background-color: var(--bg-secondary);
+    /* Fundo um pouco mais escuro que o App */
+    border: var(--border-width) solid var(--border-color-light);
+    border-radius: var(--border-radius-sm);
+    margin-bottom: var(--spacing-xs);
+    padding: var(--spacing-sm);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9em;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+    /* Gap entre nome da matéria e botão remover */
+}
+
+/* Seção principal de Professores (container do componente TeacherManagement) */
+.teachers-section {
+    background-color: var(--bg-primary);
+    border: var(--border-width) solid var(--border-color-light);
+    border-radius: var(--border-radius-sm);
+    padding: var(--spacing-lg);
+    margin-top: var(--spacing-xl);
+    text-align: left;
+    overflow-x: hidden;
+    /* Oculta overflow horizontal para evitar barras de rolagem */
+}
+
+.teachers-section h2 {
+    /* Título principal da página de professores */
+    margin-top: 0;
+    /* Zera a margem superior do primeiro h2 da página */
+}
+
+.teachers-section h3,
+.teachers-section h4 {
+    /* Títulos internos da página de professores */
+    margin-top: var(--spacing-xl);
+    margin-bottom: var(--spacing-lg);
+}
